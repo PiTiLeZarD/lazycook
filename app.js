@@ -1,8 +1,8 @@
 var express = require('express')
   , stylus = require('stylus')
-  , nib = require('nib');
+  , nib = require('nib')
 
-var app = express();
+var app = express()
 function compile(str, path) {
   return stylus(str)
     .set('filename', path)
@@ -11,18 +11,14 @@ function compile(str, path) {
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
 app.use(express.logger('dev'))
-app.use(stylus.middleware(
-  { src: __dirname + '/public'
-  , compile: compile
-  }
-))
+app.use(stylus.middleware( { src: __dirname + '/public' , compile: compile } ))
 app.use(express.static(__dirname + '/public'))
 
 
 
 app.get('/', function (req, res) {
-  res.render('index', { title : 'Home' });
-});
+  res.render('index', { title : 'Home' })
+})
 
-console.log('Listening to localhost:4000');
-app.listen(4000);
+console.log('Listening to localhost:4000')
+app.listen(4000)
