@@ -1,4 +1,29 @@
-extend layout.foundation
+extend layout.base
 
 block content
+	block topbar
+		nav.top-bar
+			ul.title-area
+				li.name 
+					h1 
+						a(href="/") Lazycook
+				li.toggle-topbar.menu-icon 
+					a 
+						span Menu
+
+			section.top-bar-section
+				block menu
+					ul.right
+						li.divider
+						li 
+							a(href="#Menu1") Menu1
+
+						li.divider
+						li 
+							a(href="#Menu2") Menu2
+							
+						li.divider
+						li.has-form 
+							a(href="#started", class="button") Getting started
+
 	block main
