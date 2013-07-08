@@ -12,19 +12,19 @@ html(lang="en", class="no-js", ng-app="lazycook")
     link(rel='stylesheet', href='/css/foundation.min.css')
     link(rel='stylesheet', href='/css/lazycook.css')
 
-    script(src="/js/custom.modernizr.js")
-    script(src="/js/angular.js")
+    script(type="text/javascript", src="/js/custom.modernizr.js")
+    script(type="text/javascript", src="/js/angular.js")
 
   body
     
     block content
 
-    script.
+    script(type="text/javascript").
       document.write('<script src=' +
         ('__proto__' in {} ? '/js/zepto' : 'js/jquery') +
         '.js><\/script>');
 
-    script(src="/js/foundation.min.js")
+    script(type="text/javascript", src="/js/foundation.min.js")
   
-    script.
+    script(type="text/javascript").
       $(document).foundation();
