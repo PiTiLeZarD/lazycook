@@ -1,9 +1,9 @@
 ifndef BASE_DIR
-        BASE_DIR=$(CURDIR)
+        BASE_DIR=$(CURDIR)/app
 endif
 
 node_modules:
-	npm install
+	npm install ${BASE_DIR}/
 
 tests: node_modules
 	@echo ""
@@ -11,8 +11,8 @@ tests: node_modules
 	@echo "-------------------------------------------------------------------"
 	node_modules/karma/bin/karma start ${BASE_DIR}/config/karma.conf.js $*
 
-app: node_modules 
+dev: node_modules 
 	@echo ""
-	@echo "Starting server"
+	@echo "Starting server (dev)"
 	@echo "-------------------------------------------------------------------"
-	nodemon app.js
+	nodemon ${BASE_DIR}/app.js
