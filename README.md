@@ -9,7 +9,6 @@ Using:
  * Visual Framework: [Foundation4](foundation.zurb.com)
  * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
  * Testing: [Karma](http://karma-runner.github.io/0.8/index.html) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/)
- * _[MangoDB](http://www.mongodb.org/) / [MongoJS](https://github.com/gett/mongojs)_ ** working on it **
 
 ## Installation
 
@@ -34,3 +33,9 @@ This should install all necessary libs and launch the node server
 ### How to
  * make tests (for unit testing, runs as a continuous testing service)
  * make e2e_tests (for end to end testing)
+
+## Future
+ * Continue digging around AngularJS until I'm sure of what I wanna do with it
+ * DB with [MangoDB](http://www.mongodb.org/) / [MongoJS](https://github.com/gett/mongojs) and AngularJS integration
+ * Get on with it with the project, I have lots of ideas, can't wait to put them in motion
+ * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
