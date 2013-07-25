@@ -2,6 +2,9 @@ ifndef BASE_DIR
         BASE_DIR=$(CURDIR)/app
 endif
 
+ifndef PORT
+        PORT=4000
+endif
 
 node_modules:
 	npm install ${BASE_DIR}/
@@ -21,4 +24,10 @@ dev: node_modules
 	@echo ""
 	@echo "Starting server (dev)"
 	@echo "-------------------------------------------------------------------"
-	nodemon ${BASE_DIR}/app.js
+	@NODE_ENV=dev PORT=${PORT} nodemon ${BASE_DIR}/app.js
+
+prod: node_modules 
+	@echo ""
+	@echo "Starting server (prod)"
+	@echo "-------------------------------------------------------------------"
+	@NODE_ENV=prod PORT=${PORT} node ${BASE_DIR}/app.js
