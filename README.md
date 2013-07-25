@@ -37,5 +37,6 @@ This should install all necessary libs and launch the node server
 ## Future
  * Continue digging around AngularJS until I'm sure of what I wanna do with it
  * DB with [MangoDB](http://www.mongodb.org/) / [MongoJS](https://github.com/gett/mongojs) and AngularJS integration
+ * Create a seed with all those frameworks combined and configured already
  * Get on with it with the project, I have lots of ideas, can't wait to put them in motion
  * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
