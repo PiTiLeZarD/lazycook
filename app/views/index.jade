@@ -11,11 +11,18 @@ block main
     .large-8.columns
       p Total number of phones {{ phones.length }}
       ul.phones
-        li( ng-repeat="phone in phones | filter:query" )
+        li( ng-repeat="phone in phones | filter:query | orderBy:orderProp" )
           {{phone.name}}
           p {{phone.snippet}}
 
       p DB version {{ DB_VERSION }}
 
     .large-4.columns
+      form
         input(type="text", placeholder="Search...", ng-model="query")
+
+        select(ng-model="orderProp")
+          option(value='name') Alphabetical
+          option(value='age') Newest 
+          option(value='-age') Oldest 
+
