@@ -8,7 +8,20 @@ block main
 
   script(type='text/javascript', src='js/controllers.js')
   .row(ng-controller="PhoneListCtrl")
+    p Total number of phones {{ phones.length }}
     ul
       li( ng-repeat="phone in phones" )
         {{phone.name}}
         p {{phone.snippet}}
+
+    p DB version {{ DB_VERSION }}
+
+    table
+      thead
+        tr
+          th id
+          th name
+      tbody
+        tr( ng-repeat="t in [[12, 'hello'], [14, 'world']]" )
+          td {{ t[0] }}
+          td {{ t[1] }}

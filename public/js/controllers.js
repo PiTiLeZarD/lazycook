@@ -7,4 +7,6 @@ function PhoneListCtrl($scope) {
     {"name": "MOTOROLA XOOM™",
      "snippet": "The Next, Next Generation tablet."}
   ];
+  
+  $scope.DB_VERSION = '3.0.1';
 }

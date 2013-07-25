@@ -8,5 +8,12 @@ describe('PhoneCat controllers', function() {
  
       expect(scope.phones.length).toBe(3);
     });
+
+    it('should have a DB Version', function() {
+      var scope = {},
+          ctrl = new PhoneListCtrl(scope);
+
+      expect(scope.DB_VERSION).toBeDefined();
+    })
   });
 });
