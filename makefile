@@ -7,7 +7,7 @@ ifndef PORT
 endif
 
 node_modules:
-	npm install ${BASE_DIR}/
+	npm install
 
 karma:
 	@echo ""
