@@ -8,20 +8,14 @@ block main
 
   script(type='text/javascript', src='js/controllers.js')
   .row(ng-controller="PhoneListCtrl")
-    p Total number of phones {{ phones.length }}
-    ul
-      li( ng-repeat="phone in phones" )
-        {{phone.name}}
-        p {{phone.snippet}}
+    .large-8.columns
+      p Total number of phones {{ phones.length }}
+      ul.phones
+        li( ng-repeat="phone in phones | filter:query" )
+          {{phone.name}}
+          p {{phone.snippet}}
 
-    p DB version {{ DB_VERSION }}
+      p DB version {{ DB_VERSION }}
 
-    table
-      thead
-        tr
-          th id
-          th name
-      tbody
-        tr( ng-repeat="t in [[12, 'hello'], [14, 'world']]" )
-          td {{ t[0] }}
-          td {{ t[1] }}
+    .large-4.columns
+        input(type="text", placeholder="Search...", ng-model="query")
