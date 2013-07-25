@@ -3,13 +3,13 @@
 A 100% Javascript cooking app (or rather a try at it)
 
 Using:
- [*] Server: [nodeJS](http://nodejs.org/) / [expressJS](http://expressjs.com/)
- [*] Templating: [Jade](http://jade-lang.com/)  
- [*] CSS: [Stylus](http://learnboost.github.io/stylus/docs/js.html) / [Nib](http://visionmedia.github.io/nib/)
- [*] Visual Framework: [Foundation4](foundation.zurb.com)
- [*] JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
- [*] Testing: [Karma](http://karma-runner.github.io/0.8/index.html) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/)
- [ ] [MangoDB](http://www.mongodb.org/) / [MongoJS](https://github.com/gett/mongojs)
+ * Server: [nodeJS](http://nodejs.org/) / [expressJS](http://expressjs.com/)
+ * Templating: [Jade](http://jade-lang.com/)  
+ * CSS: [Stylus](http://learnboost.github.io/stylus/docs/js.html) / [Nib](http://visionmedia.github.io/nib/)
+ * Visual Framework: [Foundation4](foundation.zurb.com)
+ * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
+ * Testing: [Karma](http://karma-runner.github.io/0.8/index.html) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/)
+ * _[MangoDB](http://www.mongodb.org/) / [MongoJS](https://github.com/gett/mongojs)_ ** working on it **
 
 ## Installation
 
