@@ -22,9 +22,12 @@ Using:
  * Once node is installed: npm install -g nodemon
  
 ### How to
- * `git clone https://github.com/PiTiLeZarD/lazycook.git`
- * `cd lazycook`
- * `make dev` 
+
+`
+git clone https://github.com/PiTiLeZarD/lazycook.git
+cd lazycook
+make dev
+` 
  
 This should install all necessary libs and launch the node server
 
@@ -34,8 +37,14 @@ This should install all necessary libs and launch the node server
  * make sure that you have [PhantomJS](http://phantomjs.org/) installed
 
 ### How to
- * make tests (for unit testing, runs as a continuous testing service)
- * make e2e_tests (for end to end testing)
+For unit testing, runs as a continuous testing service
+`
+make tests 
+`
+For end to end testing
+`
+make e2e_tests
+`
 
 ## Future
  * Continue digging around AngularJS until I'm sure of what I wanna do with it

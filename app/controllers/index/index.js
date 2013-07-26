@@ -7,11 +7,11 @@ exports.index = {
     }
 };
 
-exports.phones = {
-    'path' : '/phones'
+exports.recipes = {
+    'path' : '/recipes'
   , 'fn': function(req, res){
-      db.Phone.find(function(err, phones) {
-        res.json(phones);
+      db.Recipe.find(function(err, recipes) {
+        res.json(recipes);
       });
     }
 };

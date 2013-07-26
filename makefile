@@ -60,7 +60,7 @@ dbstop:
 	@echo "Stopping database"
 	${MONGO_BIN} admin --port $(shell echo ${PORT}+1 | bc) --eval "db.shutdownServer();"
 
-dbreset:
+dbreset: mongodb
 	@echo "Resetting DB"
 	@PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/dbreset.js
 
