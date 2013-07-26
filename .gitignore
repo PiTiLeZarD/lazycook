@@ -2,3 +2,4 @@ node_modules
 app/public/css/lazycook.css
 .DS_Store
 *.log
+mongodb/

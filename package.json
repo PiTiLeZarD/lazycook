@@ -8,6 +8,7 @@
     "jade": "*",
     "stylus": "*",
     "nib": "*",
-    "karma": "*"
+    "karma": "*",
+    "mongoose": "*"
   }
 }
