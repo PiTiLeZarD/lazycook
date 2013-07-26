@@ -1,4 +1,4 @@
-function PhoneListCtrl($scope, $http) {
+var PhoneListCtrl = ['$scope', '$http', function ($scope, $http) {
   $http.get('/phones').success(function(data) {
       $scope.phones = data;
   });
@@ -6,4 +6,4 @@ function PhoneListCtrl($scope, $http) {
   $scope.DB_VERSION = '3.0.1';
 
   $scope.orderProp = 'age';
-}
+}];
