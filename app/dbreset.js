@@ -1,25 +1,18 @@
-var mongoose = require('mongoose');
 
-var port = parseInt(process.env.PORT);
+var db = require('./lib/db')
+  , fixtures = require('./lib/fixtures')
+  , conn = db.connect('localhost', parseInt(process.env.PORT) + 1);
 
-/* Initialize DB */
-var mongurl = 'mongodb://localhost:'+(port + 1)+'/lazycook';
-console.log('DB attempt to connect on %s', mongurl);
-mongoose.connect(mongurl);
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'DB connection error:'));
-
-db.once('open', function callback () {
+conn.once('open', function callback () {
 	console.log('DB connection successful');
 
-	var db = require('./lib/db')
-	  , fixtures = require('./lib/fixtures');
-
-	var table_count = Object.keys(db).length;
-	var table_done = 0;
+	var table_ignore = ['connect']
+	  , table_count = Object.keys(db).length
+	  , table_done = table_ignore.length; 
 
 	for (table in db) {
+		if (table_ignore.indexOf(table) >= 0) continue;
+
 		console.log('> deleting %s', table);
 		db[table].find().remove(function() {
 			console.log('> %s done, adding fixtures', table);

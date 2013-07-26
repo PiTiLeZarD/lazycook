@@ -1,7 +1,7 @@
 describe('PhoneCat controllers', function() {
  
   describe('PhoneListCtrl', function(){
-    var scope, ctrl;
+    var scope, ctrl, $httpBackend;
 
     beforeEach(function() {
       scope = {};

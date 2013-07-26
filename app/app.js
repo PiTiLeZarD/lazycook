@@ -1,7 +1,7 @@
 var express = require('express')
   , stylus = require('stylus')
   , nib = require('nib')
-  , mongoose = require('mongoose');
+  , db = require('./lib/db');
 
 var app = module.exports = express();
 
@@ -13,10 +13,10 @@ app.set('view engine', 'jade');
 /* Middlewares */
 app.use(express.logger(app.get('env')));
 app.use(stylus.middleware( { 
-	  src: __dirname + '/public' 
-	, compile: function (str, path) { 
-		return stylus(str).set('filename', path).use(nib());
-	} 
+    src: __dirname + '/public' 
+  , compile: function (str, path) { 
+    return stylus(str).set('filename', path).use(nib());
+  } 
 } ));
 app.use(express.static(__dirname + '/public'));
 
@@ -25,21 +25,16 @@ if (app.get('env') === 'dev') {
 }
 
 /* Initialize DB */
-var mongurl = 'mongodb://localhost:'+(parseInt(app.get('port')) + 1)+'/lazycook';
-console.log('DB attempt to connect on %s', mongurl);
-mongoose.connect(mongurl);
-var db = mongoose.connection;
+var conn = db.connect('localhost', parseInt(app.get('port')) + 1);
 
-db.on('error', console.error.bind(console, 'DB connection error:'));
+conn.once('open', function callback () {
+  console.log('DB connection successful');
 
-db.once('open', function callback () {
-	console.log('DB connection successful');
+  /* Initialise controllers */
+  console.log('Routing...')
+  require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });
 
-	/* Initialise controllers */
-	console.log('Routing...')
-	require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });
-
-	/* Start server */
-	console.log('Express server listening on port ' + app.get('port'));
-	app.listen(app.get('port'));
+  /* Start server */
+  console.log('Express server listening on port ' + app.get('port'));
+  app.listen(app.get('port'));
 });
