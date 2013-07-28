@@ -13,6 +13,7 @@ app.configure( function (){
 
   app.use(express.logger(app.get('env')));
   app.use(express.favicon());
+  app.use(express.compress());
   app.use(stylus.middleware( { 
       src: __dirname + '/public' 
     , compile: function (str, path) { 

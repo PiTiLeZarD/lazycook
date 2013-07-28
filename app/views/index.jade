@@ -3,18 +3,148 @@ block main
   .row
     .large-12.columns
       h2 Welcome to Lazycook
+
+
+  .row
+    .small-12.columns
       hr
 
+    .small-8.columns
+      h3 Lazycook framework
+      p.
+        This framework is supposed to solve all your 
+        developpement problems. It uses lots of cool
+        technologies, put them all together for you, 
+        so you can focus on what's really important... 
+        Using those technologies to create cool stuffs.
 
-  script(type='text/javascript', src='js/controllers.js')
-  .row(ng-controller="RecipeListCtrl")
-    .large-8.columns
-      p Total number of recipes {{ recipes.length }}
-      ul.recipes
-        li( ng-repeat="recipe in recipes | filter:query | orderBy:orderProp" )
-          {{recipe.name}}
-          p {{recipe.excerpt}}
+    .small-4.columns
+      dl
+        dt 
+          a(href="http://nodejs.org/") NodeJS
+        dd Base of your future life
 
-    .large-4.columns
-      form
-        input(type="text", placeholder="Search...", ng-model="query")
+        dt 
+          a(href="http://expressjs.com/") ExpressJS
+        dd Web application framework
+
+  .row
+    .small-12.columns
+      hr
+
+    .small-4.columns
+      dl
+        dt
+          a(href="http://jade-lang.com/") Jade
+        dd Templating system
+
+        dt
+          a(href="http://learnboost.github.io/stylus/docs/js.html") Stylus
+        dd CSS Preprocessor
+
+        dt
+          a(href="http://visionmedia.github.io/nib/") Nib
+        dd Stylus CSS3++
+
+        dt
+          a(href="http://foundation.zurb.com") Foundation4
+        dd Responsive HTML5 Framework
+
+    .small-8.columns
+      h3 Styling is easy
+      p.
+        With lazycook, you get all the cool stuff to start
+        designing and styling right away.
+
+      pre.panel.
+        .small-8.columns
+          h3 Styling is easy
+          p. 
+            Look for yourself
+
+          pre.panel.
+            Here is a bit of code
+
+  .row
+    .small-12.columns
+      hr
+
+    .small-8.columns
+      h3 Power of new JS tools
+      p.
+        You have right away access to the best in-browser
+        javascript framework to build awesome HTML5 apps.
+
+    .small-4.columns
+      dl
+        dt
+          a(href="http://angularjs.org/") AngularJS
+        dd HTML enhanced for web apps!
+
+        dt
+          a(href="http://zeptojs.com/") Zepto
+        dd Minimalist JavaScript library for modern browsers
+
+  .row
+    .small-12.columns
+      hr
+
+    .small-4.columns
+      dl
+        dt
+          a(href="http://www.mongodb.org/") MongoDB
+        dd NoSQL Document Database
+
+        dt
+          a(href="http://mongoosejs.com/") MongooseJS
+        dd ORM for MongoDB and NodeJS
+
+    .small-8.columns
+      h3 Database made extreme!
+      p.
+        No limits, everything working upfront, what are you waiting for?
+
+  .row
+    .small-12.columns
+      hr
+
+    .small-8.columns
+      h3 Authentication and ACL
+      p.
+        Every app needs user right? This framework bundles
+        all the usefull things, and they are there right
+        away for you to use.
+
+    .small-4.columns
+      dl
+        dt
+          a(href="http://passportjs.org/") PassportJS
+        dd Authentication system, Facebook and all!
+
+        dt
+          a(href="https://github.com/optimalbits/node_acl") NodeACL
+        dd Access Control List
+
+  .row
+    .small-12.columns
+      hr
+
+    .small-4.columns
+      dl
+        dt
+          a(href="http://karma-runner.github.io/") Karma/Testacular
+        dd Test framework with... well everything!
+
+        dt
+          a(href="http://pivotal.github.io/jasmine/") Jasmine
+        dd Makes you wanna test more!
+
+        dt
+          a(href="http://phantomjs.org/") PhantomJS
+        dd Headless browser to support testing
+
+    .small-8.columns
+      h3 You thought you could not test?
+      p.
+        No excuses, all the tools are there, and just waiting
+        for you wit to fuel that testing environment.

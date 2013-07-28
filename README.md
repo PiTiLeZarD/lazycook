@@ -6,11 +6,12 @@ Using:
  * Server: [nodeJS](http://nodejs.org/) / [expressJS](http://expressjs.com/)
  * Templating: [Jade](http://jade-lang.com/)  
  * CSS: [Stylus](http://learnboost.github.io/stylus/docs/js.html) / [Nib](http://visionmedia.github.io/nib/)
- * Visual Framework: [Foundation4](foundation.zurb.com)
+ * Responsive Front-end: [Foundation4](http://foundation.zurb.com)
  * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
+ * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/)
+ * Authentication: [PassportJS](http://passportjs.org/) / [NodeACL](https://github.com/optimalbits/node_acl)
  * Testing: [Karma](http://karma-runner.github.io/0.8/index.html) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/)
- * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/) ORM
-
+ 
 ## Installation
 
 ### Prerequisites
@@ -39,7 +40,8 @@ This should install all necessary libs and launch the node server
  * `make e2e_tests (For end to end testing)`
 
 ## Future
- * Continue digging around AngularJS until I'm sure of what I wanna do with it
+ * [Node-validator](https://github.com/chriso/node-validator) and [express-validator](https://github.com/ctavan/express-validator)
  * Create a seed with all those frameworks combined and configured already
+ * Continue digging around AngularJS until I'm sure of what I wanna do with it
  * Get on with it with the project, I have lots of ideas, can't wait to put them in motion
  * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
