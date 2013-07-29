@@ -26,8 +26,12 @@ describe('Authentication', function() {
     user.save(function(err) {
       if (err) done(err);
       expect(user.password).not.to.equal('test');
-      done();
+      user.comparePassword('test', function(err, isMatch) {
+        expect(isMatch).to.be.true;
+        done(err);
+      })
     })
   });
 
 });
+
