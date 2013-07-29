@@ -1,7 +1,9 @@
 var express = require('express')
   , stylus = require('stylus')
   , nib = require('nib')
-  , db = require('./lib/db');
+  , db = require('./lib/db')
+  , passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
 
 var app = module.exports = express();
 
@@ -30,9 +32,25 @@ app.configure( 'prod', function (){
   app.use( express.errorHandler());
 });
 
+/* Authentication */
+passport.use(new LocalStrategy(
+  function(login, password, next) {
+    User.findOne({ login: login }, function(err, user) {
+      if (err) return next(err);
+
+      if (!user) {
+        return next(null, false, { message: 'Incorrect login.' });
+      }
+      if (!user.validPassword(password)) {
+        return next(null, false, { message: 'Incorrect password.' });
+      }
+      return next(null, user);
+    });
+  }
+));
+
 /* Initialize DB */
-var conn = db.connect('localhost', parseInt(app.get('port')) + 1);
-conn.once('open', function callback () {
+db.connect('localhost', parseInt(app.get('port')) + 1, function() {
   console.log('DB connection successful');
 
   /* Initialise controllers */

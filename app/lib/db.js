@@ -3,16 +3,13 @@ var mongoose = require('mongoose')
   , bcrypt = require('bcrypt')
   , SALT = 10;
 
-module.exports.connect = function(host, port) {
+module.exports.connect = function(host, port, callback) {
   var mongurl = 'mongodb://'+host+':'+port+'/lazycook';
   console.log('DB attempt to connect on %s', mongurl);
 
   mongoose.connect( mongurl, { db: { safe: true } } );
-
-  var conn = mongoose.connection;
-  conn.on('error', console.error.bind(console, 'DB connection error:'));
-  
-  return conn;
+  mongoose.connection.on('error', console.error.bind(console, 'DB connection error:'));
+  mongoose.connection.once('open', callback);
 };
 
 var userSchema = mongoose.Schema({

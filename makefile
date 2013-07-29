@@ -19,6 +19,9 @@ endif
 ifndef MONGO_BIN
 	MONGO_BIN='mongo'
 endif
+ifndef JASMINE_BIN
+	JASMINE_BIN='node_modules/jasmine-node/bin/jasmine-node'
+endif
 
 node_modules:
 	npm install
@@ -28,11 +31,14 @@ karma:
 	@echo "Starting Karma Server (http://karma-runner.github.io)"
 	@echo "-------------------------------------------------------------------"
 
-tests: node_modules karma
-	${KARMA_BIN} start ${BASE_DIR}/config/karma.conf.js $*
+ib_tests: node_modules karma
+	${KARMA_BIN} start ${BASE_DIR}/config/karma-unit-browser.conf.js $*
 
 e2e_tests: node_modules karma
 	${KARMA_BIN} start ${BASE_DIR}/config/karma-e2e.conf.js $*
+
+u_tests: node_modules karma
+	${JASMINE_BIN} ${BASE_DIR}/test/unit-server/*Spec.js
 
 dev: node_modules
 	@echo ""
