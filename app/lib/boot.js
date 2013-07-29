@@ -4,6 +4,8 @@ var express = require('express')
 
 module.exports = function(parent, options){
   var verbose = options.verbose;
+
+  console.log('Routing...')
   fs.readdirSync(__dirname + '/../controllers').forEach(function(name){
     verbose && console.log('\n   %s:', name);
     var obj = require(__dirname + '/../controllers/' + name)

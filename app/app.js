@@ -56,8 +56,7 @@ db.connect('localhost', parseInt(app.get('port')) + 1, app.get('database'), func
     console.log('Exiting...');
     process.exit();
   }
-  /* Initialise controllers */
-  console.log('Routing...')
+  /* Initialise controllers, routing... */
   require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });
 
   /* Start server */

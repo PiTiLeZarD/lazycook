@@ -28,11 +28,12 @@ module.exports.mongo = null;
 ignore_keys.push('ignore_keys');
 module.exports.ignore_keys = ignore_keys;
 
+console.log('Binding models...')
 fs.readdirSync(__dirname + '/../models').forEach(function(name) {
   console.log('\n   model %s:', name);
   var obj = require(__dirname + '/../models/' + name);
 
-  for (model in obj) {
+  for (var model in obj) {
     console.log('   -> %s', model);
     module.exports[model] = obj[model];
   }
