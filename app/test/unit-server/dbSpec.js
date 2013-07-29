@@ -10,7 +10,7 @@ describe('Database', function() {
     expect(db.connect).toEqual( jasmine.any(Function) );
 
     var connected = false;
-    db.connect('localhost', 4001, function() { connected = true; });
+    db.connect('localhost', parseInt(process.env['PORT']) + 1, function() { connected = true; });
     waitsFor(function() {
       return connected !== false;
     }, 'Should connect', 1000);

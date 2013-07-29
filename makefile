@@ -38,7 +38,7 @@ e2e_tests: node_modules karma
 	${KARMA_BIN} start ${BASE_DIR}/config/karma-e2e.conf.js $*
 
 u_tests: node_modules karma
-	${JASMINE_BIN} ${BASE_DIR}/test/unit-server/*Spec.js
+	PORT=${PORT} ${JASMINE_BIN} --forceexit ${BASE_DIR}/test/unit-server/*Spec.js
 
 dev: node_modules
 	@echo ""
