@@ -10,10 +10,10 @@ describe('Database', function() {
     expect(db.connect).toEqual( jasmine.any(Function) );
 
     var connected = false;
-    db.connect('localhost', parseInt(process.env['PORT']) + 1, function() { connected = true; });
-    waitsFor(function() {
-      return connected !== false;
-    }, 'Should connect', 1000);
+    db.connect('localhost', parseInt(process.env['PORT']) + 1, function(err) { 
+      connected = !err; 
+    });
+    waitsFor(function() { return connected; }, 'Should connect', 1000);
 
     runs(function() {
       expect(connected).toBe(true);

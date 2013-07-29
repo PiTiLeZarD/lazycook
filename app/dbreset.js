@@ -2,9 +2,12 @@
 var db = require('./lib/db')
   , fixtures = require('./lib/fixtures');
 
-db.connect('localhost', parseInt(process.env.PORT) + 1, function() {
-  console.log('DB connection successful');
-
+db.connect('localhost', parseInt(process.env.PORT) + 1, function(err) {
+  if (err) {
+    console.log('Exiting...');
+    process.exit();
+  }
+  
   var table_ignore = ['connect']
     , table_count = Object.keys(db).length
     , table_done = table_ignore.length; 

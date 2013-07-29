@@ -50,9 +50,11 @@ passport.use(new LocalStrategy(
 ));
 
 /* Initialize DB */
-db.connect('localhost', parseInt(app.get('port')) + 1, function() {
-  console.log('DB connection successful');
-
+db.connect('localhost', parseInt(app.get('port')) + 1, function(err) {
+  if (err) {
+    console.log('Exiting...');
+    process.exit();
+  }
   /* Initialise controllers */
   console.log('Routing...')
   require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });

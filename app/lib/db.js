@@ -3,13 +3,19 @@ var mongoose = require('mongoose')
   , bcrypt = require('bcrypt')
   , SALT = 10;
 
-module.exports.connect = function(host, port, callback) {
+module.exports.connect = function(host, port, next) {
   var mongurl = 'mongodb://'+host+':'+port+'/lazycook';
   console.log('DB attempt to connect on %s', mongurl);
 
   mongoose.connect( mongurl, { db: { safe: true } } );
-  mongoose.connection.on('error', console.error.bind(console, 'DB connection error:'));
-  mongoose.connection.once('open', callback);
+  mongoose.connection.on('error', function(err) {
+    console.log('DB connection error:', err);
+    next(err);
+  });
+  mongoose.connection.once('open', function() {
+    console.log('DB connection successful');
+    next(false);
+  });
 };
 
 var userSchema = mongoose.Schema({
@@ -22,13 +28,13 @@ var userSchema = mongoose.Schema({
 userSchema.pre('save', function(next) {
   var user = this;
 
-  if(!user.isModified('password')) return next();
+  if (!user.isModified('password')) return next();
 
   bcrypt.genSalt(SALT, function(err, salt) {
-    if(err) return next(err);
+    if (err) return next(err);
 
     bcrypt.hash(user.password, salt, function(err, hash) {
-      if(err) return next(err);
+      if (err) return next(err);
 
       user.password = hash;
       next();
@@ -38,7 +44,7 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if(err) return cb(err);
+    if (err) return cb(err);
 
     cb(null, isMatch);
   });
