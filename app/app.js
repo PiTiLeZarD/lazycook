@@ -10,7 +10,7 @@ var app = module.exports = express();
 /* Global configs */
 app.configure( function (){
   app.set('port', process.env.PORT);
-  app.set('database', process.env.DATABASE);
+  app.set('mongourl', process.env.MONGOURL);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
 
@@ -51,7 +51,7 @@ passport.use(new LocalStrategy(
 ));
 
 /* Initialize DB */
-db.connect('localhost', parseInt(app.get('port')) + 1, app.get('database'), function(err) {
+db.connect(app.get('mongourl'), function(err) {
   if (err) {
     console.log('Exiting...');
     process.exit();

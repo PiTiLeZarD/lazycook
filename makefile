@@ -4,8 +4,8 @@ endif
 ifndef PORT
 	PORT=4000
 endif
-ifndef DATABASE
-	DATABASE='lazycook'
+ifndef MONGOURL
+	MONGOURL='mongodb://localhost:4001/lazycook'
 endif
 ifndef KARMA_BIN
 	KARMA_BIN='node_modules/karma/bin/karma'
@@ -35,13 +35,13 @@ karma:
 	@echo "-------------------------------------------------------------------"
 
 ib_tests: node_modules karma
-	@DATABASE=${DATABASE}_tests PORT=${PORT} ${KARMA_BIN} start ${BASE_DIR}/config/karma-unit-browser.conf.js $*
+	@MONGOURL=${MONGOURL}_tests PORT=${PORT} ${KARMA_BIN} start ${BASE_DIR}/config/karma-unit-browser.conf.js $*
 
 e2e_tests: node_modules karma
-	@DATABASE=${DATABASE}_tests PORT=${PORT} ${KARMA_BIN} start ${BASE_DIR}/config/karma-e2e.conf.js $*
+	@MONGOURL=${MONGOURL}_tests PORT=${PORT} ${KARMA_BIN} start ${BASE_DIR}/config/karma-e2e.conf.js $*
 
 u_tests: node_modules
-	@DATABASE=${DATABASE}_tests PORT=${PORT} ${MOCHA_BIN} ${BASE_DIR}/test/unit-server/
+	@MONGOURL=${MONGOURL}_tests PORT=${PORT} ${MOCHA_BIN} ${BASE_DIR}/test/unit-server/
 
 tests: u_tests ib_tests e2e_tests
 	@echo "All tests done"
@@ -50,13 +50,13 @@ dev: node_modules
 	@echo ""
 	@echo "Starting server (dev)"
 	@echo "-------------------------------------------------------------------"
-	@DATABASE=${DATABASE} NODE_ENV=dev PORT=${PORT} ${NODEMON_BIN} ${BASE_DIR}/app.js
+	@MONGOURL=${MONGOURL} NODE_ENV=dev PORT=${PORT} ${NODEMON_BIN} ${BASE_DIR}/app.js
 
 prod: node_modules
 	@echo ""
 	@echo "Starting server (prod)"
 	@echo "-------------------------------------------------------------------"
-	@DATABASE=${DATABASE} NODE_ENV=prod PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/app.js
+	@MONGOURL=${MONGOURL} NODE_ENV=prod PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/app.js
 
 mongodb:
 	@mkdir -p mongodb
@@ -74,7 +74,7 @@ dbstop:
 
 dbreset: mongodb
 	@echo "Resetting DB"
-	@DATABASE=${DATABASE} PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/dbreset.js
+	@MONGOURL=${MONGOURL} PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/dbreset.js
 
 dbconsole:
 	@echo "Connecting to mongodb"

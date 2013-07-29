@@ -4,12 +4,10 @@ var mongoose = require('mongoose')
   , fs = require('fs');
 
 ignore_keys.push('connect');
-module.exports.connect = function(host, port, database, next) {
+module.exports.connect = function(mongurl, next) {
   if (mongoose.connection.db) return next(null);
 
-  var mongurl = 'mongodb://'+host+':'+port+'/'+database;
   console.log('DB attempt to connect on %s', mongurl);
-
   mongoose.connect( mongurl, { db: { safe: true } } );
   mongoose.connection.on('error', function(err) {
     console.log('DB connection error:', err);

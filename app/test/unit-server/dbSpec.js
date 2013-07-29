@@ -1,13 +1,12 @@
 var expect = require('chai').expect
   , fixtures = require('../../lib/fixtures')
   , db = require('../../lib/db')
-  , PORT = parseInt(process.env['PORT']) + 1
-  , DATABASE = process.env['DATABASE'];
+  , MONGOURL = process.env['MONGOURL'];
 
 describe('Database', function() {
 
   before(function(done) {
-    db.connect('localhost', PORT, DATABASE, done);
+    db.connect(MONGOURL, done);
   });
 
   before(function(done) {
