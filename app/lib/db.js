@@ -1,9 +1,9 @@
 
 var mongoose = require('mongoose')
-  , bcrypt = require('bcrypt')
-  , SALT = 10
-  , ignore_keys = [];
+  , ignore_keys = []
+  , fs = require('fs');
 
+ignore_keys.push('connect');
 module.exports.connect = function(host, port, database, next) {
   if (mongoose.connection.db) return next(null);
 
@@ -21,42 +21,6 @@ module.exports.connect = function(host, port, database, next) {
     next(null);
   });
 };
-ignore_keys.push('connect');
-
-var userSchema = mongoose.Schema({
-    login        : { type: String, required: true, unique: true }
-  , password     : { type: String, required: true }
-  , email        : { type: String, required: true, unique: true }
-  , role         : { type: String, default: 'user' }
-});
-
-userSchema.pre('save', function(next) {
-  var user = this;
-
-  if (!user.isModified('password')) return next();
-
-  bcrypt.genSalt(SALT, function(err, salt) {
-    if (err) return next(err);
-
-    bcrypt.hash(user.password, salt, function(err, hash) {
-      if (err) return next(err);
-
-      user.password = hash;
-      next();
-    });
-  });
-});
-
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if (err) return cb(err);
-
-    cb(null, isMatch);
-  });
-};
-
-module.exports.User = mongoose.model('User', userSchema);
-
 
 ignore_keys.push('mongo');
 module.exports.mongo = null;
@@ -64,3 +28,12 @@ module.exports.mongo = null;
 ignore_keys.push('ignore_keys');
 module.exports.ignore_keys = ignore_keys;
 
+fs.readdirSync(__dirname + '/../models').forEach(function(name) {
+  console.log('\n   model %s:', name);
+  var obj = require(__dirname + '/../models/' + name);
+
+  for (model in obj) {
+    console.log('   -> %s', model);
+    module.exports[model] = obj[model];
+  }
+});
