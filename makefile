@@ -43,6 +43,9 @@ e2e_tests: node_modules karma
 u_tests: node_modules
 	@DATABASE=${DATABASE}_tests PORT=${PORT} ${MOCHA_BIN} ${BASE_DIR}/test/unit-server/
 
+tests: u_tests ib_tests e2e_tests
+	@echo "All tests done"
+
 dev: node_modules
 	@echo ""
 	@echo "Starting server (dev)"

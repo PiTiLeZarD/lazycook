@@ -11,7 +11,8 @@ files = [
   , 'test/unit-browser/**/*.js'
 ];
 
-autoWatch = true;
+autoWatch = false;
+singleRun = true;
 
 browsers = ['PhantomJS'];
 
