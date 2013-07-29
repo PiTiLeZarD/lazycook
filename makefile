@@ -1,8 +1,11 @@
 ifndef BASE_DIR
-        BASE_DIR=$(CURDIR)/app
+	BASE_DIR=$(CURDIR)/app
 endif
 ifndef PORT
-        PORT=4000
+	PORT=4000
+endif
+ifndef DATABASE
+	DATABASE='lazycook'
 endif
 ifndef KARMA_BIN
 	KARMA_BIN='node_modules/karma/bin/karma'
@@ -44,13 +47,13 @@ dev: node_modules
 	@echo ""
 	@echo "Starting server (dev)"
 	@echo "-------------------------------------------------------------------"
-	@NODE_ENV=dev PORT=${PORT} ${NODEMON_BIN} ${BASE_DIR}/app.js
+	@DATABASE=${DATABASE} NODE_ENV=dev PORT=${PORT} ${NODEMON_BIN} ${BASE_DIR}/app.js
 
 prod: node_modules
 	@echo ""
 	@echo "Starting server (prod)"
 	@echo "-------------------------------------------------------------------"
-	@NODE_ENV=prod PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/app.js
+	@DATABASE=${DATABASE} NODE_ENV=prod PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/app.js
 
 mongodb:
 	@mkdir -p mongodb
@@ -68,7 +71,7 @@ dbstop:
 
 dbreset: mongodb
 	@echo "Resetting DB"
-	@PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/dbreset.js
+	@DATABASE=${DATABASE} PORT=${PORT} ${NODE_BIN} ${BASE_DIR}/dbreset.js
 
 dbconsole:
 	@echo "Connecting to mongodb"

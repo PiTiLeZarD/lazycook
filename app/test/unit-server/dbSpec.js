@@ -28,7 +28,7 @@ describe('Database', function() {
         });
         asyncSpecWait();
       });
-    })
+    });
 
   });
 

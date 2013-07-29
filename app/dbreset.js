@@ -2,7 +2,7 @@
 var db = require('./lib/db')
   , fixtures = require('./lib/fixtures');
 
-db.connect('localhost', parseInt(process.env.PORT) + 1, function(err) {
+db.connect('localhost', parseInt(process.env.PORT) + 1, process.env.DATABASE, function(err) {
   if (err) {
     console.log('Exiting...');
     process.exit();

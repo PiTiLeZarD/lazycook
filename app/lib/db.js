@@ -3,8 +3,12 @@ var mongoose = require('mongoose')
   , bcrypt = require('bcrypt')
   , SALT = 10;
 
-module.exports.connect = function(host, port, next) {
-  var mongurl = 'mongodb://'+host+':'+port+'/lazycook';
+module.exports.connect = function(host, port, database, next) {
+  if (mongoose.connection._hasOpened) {
+    next(false);
+  }
+
+  var mongurl = 'mongodb://'+host+':'+port+'/'+database;
   console.log('DB attempt to connect on %s', mongurl);
 
   mongoose.connect( mongurl, { db: { safe: true } } );
