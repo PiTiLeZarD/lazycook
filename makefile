@@ -22,8 +22,8 @@ endif
 ifndef MONGO_BIN
 	MONGO_BIN='mongo'
 endif
-ifndef JASMINE_BIN
-	JASMINE_BIN='node_modules/jasmine-node/bin/jasmine-node'
+ifndef MOCHA_BIN
+	MOCHA_BIN='node_modules/mocha/bin/mocha'
 endif
 
 node_modules:
@@ -35,13 +35,13 @@ karma:
 	@echo "-------------------------------------------------------------------"
 
 ib_tests: node_modules karma
-	${KARMA_BIN} start ${BASE_DIR}/config/karma-unit-browser.conf.js $*
+	@DATABASE=${DATABASE}_tests PORT=${PORT} ${KARMA_BIN} start ${BASE_DIR}/config/karma-unit-browser.conf.js $*
 
 e2e_tests: node_modules karma
-	${KARMA_BIN} start ${BASE_DIR}/config/karma-e2e.conf.js $*
+	@DATABASE=${DATABASE}_tests PORT=${PORT} ${KARMA_BIN} start ${BASE_DIR}/config/karma-e2e.conf.js $*
 
-u_tests: node_modules karma
-	PORT=${PORT} ${JASMINE_BIN} --forceexit ${BASE_DIR}/test/unit-server/*Spec.js
+u_tests: node_modules
+	@DATABASE=${DATABASE}_tests PORT=${PORT} ${MOCHA_BIN} ${BASE_DIR}/test/unit-server/
 
 dev: node_modules
 	@echo ""

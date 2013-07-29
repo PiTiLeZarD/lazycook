@@ -1,12 +1,11 @@
 
 var mongoose = require('mongoose')
   , bcrypt = require('bcrypt')
-  , SALT = 10;
+  , SALT = 10
+  , ignore_keys = [];
 
 module.exports.connect = function(host, port, database, next) {
-  if (mongoose.connection._hasOpened) {
-    next(false);
-  }
+  if (mongoose.connection.db) return next(null);
 
   var mongurl = 'mongodb://'+host+':'+port+'/'+database;
   console.log('DB attempt to connect on %s', mongurl);
@@ -18,9 +17,11 @@ module.exports.connect = function(host, port, database, next) {
   });
   mongoose.connection.once('open', function() {
     console.log('DB connection successful');
-    next(false);
+    module.exports.mongo = mongoose.connection.db;
+    next(null);
   });
 };
+ignore_keys.push('connect');
 
 var userSchema = mongoose.Schema({
     login        : { type: String, required: true, unique: true }
@@ -56,3 +57,9 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 module.exports.User = mongoose.model('User', userSchema);
 
+
+ignore_keys.push('mongo');
+module.exports.mongo = null;
+
+ignore_keys.push('ignore_keys');
+module.exports.ignore_keys = ignore_keys;

@@ -1,28 +1,33 @@
+var expect = require('chai').expect
+  , fixtures = require('../../lib/fixtures')
+  , db = require('../../lib/db')
+  , PORT = parseInt(process.env['PORT']) + 1
+  , DATABASE = process.env['DATABASE'];
+
 describe('Authentication', function() {
 
-  var db = require('../../lib/db');
+  before(function(done) {
+    db.connect('localhost', PORT, DATABASE, done);
+  });
 
-  it('should connect and', function() {
-    var connected = false;
-    db.connect('localhost', parseInt(process.env['PORT']) + 1, function(err) { 
-      connected = !err; 
+  before(function(done) {
+    fixtures.clearDB(done);
+  });
+
+  it('should crypt the password', function(done) {
+    var user = new db.User({
+        'login': 'test'
+      , 'password': 'test'
+      , 'email': 'test@mailinator.com'
     });
-    waitsFor(function() { return connected; }, 'Should connect', 1000);
-
-    runs(function() {
-      expect(connected).toBe(true);
-
-      describe('Connected Authentication', function() {
-
-        it('should crypt the password', function() {
-          var user = new db.User({'login': 'test', 'password': 'test'});
-          expect(user.password).toBeDefined();
-          expect(user.password).not.toBeNull();
-          expect(user.password).not.toBe('test');
-        });
-
-      });
-    });
+    expect(user.password).to.exist;
+    expect(user.password).not.to.be.null;
+    expect(user.password).to.equal('test');
+    user.save(function(err) {
+      if (err) done(err);
+      expect(user.password).not.to.equal('test');
+      done();
+    })
   });
 
 });

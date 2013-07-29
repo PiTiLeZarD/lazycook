@@ -10,7 +10,7 @@ Using:
  * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
  * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/)
  * Authentication: [PassportJS](http://passportjs.org/) / [NodeACL](https://github.com/optimalbits/node_acl)
- * Testing: [Karma](http://karma-runner.github.io/0.8/index.html) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/) / [jasmine-node](https://github.com/mhevery/jasmine-node)
+ * Testing: [Karma](http://karma-runner.github.io) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/) / [Mocha](http://visionmedia.github.io/mocha/) / [chai](http://chaijs.com/)
  
 ## Installation
 

@@ -18,7 +18,8 @@
     , "passport-local": "*"
     , "acl": "*"
     , "bcrypt": "*"
-    , "jasmine-node": "*"
+    , "mocha": "*"
+    , "chai": "*"
   }
   , "repository": {
       "type"  : "git"
