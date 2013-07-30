@@ -6,6 +6,13 @@ block main
     fieldset.small-12.columns
       legend Login
 
+      - if (session.messages && session.messages.length)
+        .row
+          .large-8.large-offset-2.columns
+            - each message in session.messages
+              .alert-box.radius.alert 
+                =message
+
       .row
         .small-6.columns
           label Login:
@@ -13,6 +20,6 @@ block main
 
         .small-6.columns
           label Password:
-          input(type="text", name="password")
+          input(type="password", name="password")
 
       input(type="submit", value="Log In").button.radius

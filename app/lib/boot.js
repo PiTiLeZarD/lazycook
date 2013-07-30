@@ -38,6 +38,7 @@ module.exports = function(parent, options){
         , call = obj[key].fn || function(req, res) { res.redirect('/error/404'); };
         
       verbose && console.log('     %s %s -> %s', method, path, key);
+
       app[method](path, call);
     }
 

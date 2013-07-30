@@ -2,6 +2,7 @@ var express = require('express')
   , stylus = require('stylus')
   , nib = require('nib')
   , db = require('./lib/db')
+  , MongoStore = require('connect-mongo')(express)
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
 
@@ -24,6 +25,7 @@ app.configure( function (){
     } 
   } ));
   app.use(express.static(__dirname + '/public'));
+  app.use(express.bodyParser());
 });
 
 app.configure( 'dev', function (){
@@ -33,29 +35,53 @@ app.configure( 'prod', function (){
   app.use( express.errorHandler());
 });
 
-/* Authentication */
-passport.use(new LocalStrategy(
-  function(login, password, next) {
-    User.findOne({ login: login }, function(err, user) {
-      if (err) return next(err);
-
-      if (!user) {
-        return next(null, false, { message: 'Incorrect login.' });
-      }
-      if (!user.validPassword(password)) {
-        return next(null, false, { message: 'Incorrect password.' });
-      }
-      return next(null, user);
-    });
-  }
-));
-
 /* Initialize DB */
 db.connect(app.get('mongourl'), function(err) {
   if (err) {
     console.log('Exiting...');
     process.exit();
   }
+
+  /* sessions */
+  app.use(express.cookieParser());
+  app.use(express.session({
+      secret:'Im clark kent'
+    , maxAge: new Date(Date.now() + 3600000)
+    , store: new MongoStore({ 'db' : db.mongo })
+  })); 
+
+  /* passport authentication */
+  passport.use(new LocalStrategy(
+      {
+          'usernameField': 'login'
+        , 'passwordField': 'password'
+      }
+    , function(login, password, next) {
+        db.User.findOne({ login: login }, function(err, user) {
+          if (err) return next(err);
+
+          if (!user) {
+            return next(null, false, { message: 'Incorrect login.' });
+          }
+          
+          user.comparePassword(password, function(err, isMatch) {
+            if (err) next(err, false);
+            if (isMatch) next(null, user);
+            else next(null, false, { message: 'Incorrect password.' });
+          });
+
+        });
+      }
+  ));
+  passport.serializeUser(function(user, done) {
+    done(null, user.login);
+  });
+  passport.deserializeUser(function(login, done) {
+    db.User.find({'login': login}, done);
+  });
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   /* Initialise controllers, routing... */
   require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });
 
