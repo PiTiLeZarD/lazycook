@@ -1,25 +1,40 @@
 extend layout.base
-
+- if 
 block content
-	block topbar
-		nav.top-bar
-			ul.title-area
-				li.name 
-					h1 
-						a(href="/") Lazycook
-				li.toggle-topbar.menu-icon 
-					a 
-						span Menu
+  block topbar
+    nav.top-bar
+      ul.title-area
+        li.name 
+          h1 
+            a(href="/") Lazycook
+        li.toggle-topbar.menu-icon 
+          a 
+            span Menu
 
-			section.top-bar-section
-				block menu
-					ul.right
-						li.divider
-						li 
-							a(href="#Menu") Menu
-							
-						li.divider
-						li.has-form 
-							a(href="/login", class="button") Login
+      section.top-bar-section
+        block menu
+          ul.right
+            li.divider
+            li.has-form 
+              - if (user)
+                Welcome <%= user.login %>
+              - else
+                form(action="/user/register", method="POST")
+                  ul(class="small-block-grid-2")
+                    li
+                      input(type="text", name="email", placeholder="Your e-mail")
+                    li
+                      input(type="submit", class="button", value="Register")
+              
+            li.divider
+            li 
+              a(href="#Menu") Menu
 
-	block main
+            li.divider
+            li.has-form 
+              - if (user)
+                a(href="/logout", class="button") Logout
+              - else
+                a(href="/login?reveal=1", class="button", data-reveal-ajax="false", data-reveal-id="login") Login
+
+  block main

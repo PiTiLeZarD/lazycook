@@ -82,6 +82,13 @@ db.connect(app.get('mongourl'), function(err) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  /* view helpers*/
+  app.use(function(req, res, next){
+    res.locals.session = req.session;
+    res.locals.user = req.session.passeport && req.session.passeport.user ? req.session.passeport.user : false; 
+    next();
+  });
+
   /* Initialise controllers, routing... */
   require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });
 

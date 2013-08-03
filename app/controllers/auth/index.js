@@ -14,8 +14,9 @@ exports.postlogin = {
           return res.redirect('/login')
         }
 
-        req.logIn(user, function(err) {
+        req.login(user, function(err) {
           if (err) return next(err);
+          req.session.messages = [];
           return res.redirect('/');
         });
       })(req, res, next);
@@ -25,7 +26,14 @@ exports.postlogin = {
 exports.login = {
     'path': '/login'
   , 'fn': function(req, res) {
-      res.render('login', {'session': req.session});
+      res.render('login');
     }
 };
 
+exports.logout = {
+    'path': '/logout'
+  , 'fn': function(req, res) {
+      req.logout();
+      res.redirect('/');
+    }
+};
