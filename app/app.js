@@ -66,7 +66,10 @@ db.connect(app.get('mongourl'), function(err) {
           
           user.comparePassword(password, function(err, isMatch) {
             if (err) next(err, false);
-            if (isMatch) next(null, user);
+            if (isMatch) {
+              console.log('User %s logged in', login);
+              next(null, user);
+            }
             else next(null, false, { message: 'Incorrect password.' });
           });
 
@@ -85,7 +88,8 @@ db.connect(app.get('mongourl'), function(err) {
   /* view helpers*/
   app.use(function(req, res, next){
     res.locals.session = req.session;
-    res.locals.user = req.session.passeport && req.session.passeport.user ? req.session.passeport.user : false; 
+    res.locals.user = req.isAuthenticated() ? req.user : false;
+    res.locals.reveal = 'reveal' in req.query;
     next();
   });
 

@@ -26,7 +26,7 @@ exports.postlogin = {
 exports.login = {
     'path': '/login'
   , 'fn': function(req, res) {
-      res.render('login');
+      res.render('login', {'revealId': 'login'});
     }
 };
 
