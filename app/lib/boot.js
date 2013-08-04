@@ -11,10 +11,11 @@ module.exports = function(parent, options){
     var obj = require(__dirname + '/../controllers/' + name)
       , name = obj.name || name
       , prefix = obj.prefix || ''
-      , app = express();
+      , app = express()
+      , viewengine = obj.viewengine || parent.get('view engine');
 
-    app.set('views', parent.get('views'));
-    app.set('view engine', parent.get('view engine'));
+    app.set('views', __dirname + '/../controllers/' + name);
+    app.set('view engine', viewengine);
 
     // before middleware support
     if (obj.before) {
