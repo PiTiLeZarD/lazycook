@@ -3,3 +3,4 @@ app/public/css/lazycook.css
 .DS_Store
 *.log
 mongodb/
+mongodb.log*
