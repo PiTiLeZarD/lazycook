@@ -41,7 +41,5 @@ This should install all necessary libs and launch the node server
 
 ## Future
  * [Node-validator](https://github.com/chriso/node-validator) and [express-validator](https://github.com/ctavan/express-validator)
- * Create a seed with all those frameworks combined and configured already
- * Continue digging around AngularJS until I'm sure of what I wanna do with it
- * Get on with it with the project, I have lots of ideas, can't wait to put them in motion
+ * [Connect-Flash](https://github.com/jaredhanson/connect-flash)
  * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
