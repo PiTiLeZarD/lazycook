@@ -1,0 +1,42 @@
+nav.top-bar
+  ul.title-area
+    li.name 
+      h1 
+        a(href="/") Lazycook
+    li.toggle-topbar.menu-icon 
+      a 
+        span Menu
+
+  section.top-bar-section
+    block menu
+      ul.right
+        li.divider
+        li.has-form 
+          - if (user)
+            a(href="#", onclick="return false;")
+              | Welcome 
+              = ' ' + user.login
+          - else
+            form(action="/user/register", method="POST")
+              ul(class="small-block-grid-2")
+                li
+                  input(type="text", name="email", placeholder="Your e-mail")
+                li
+                  input(type="submit", class="button", value="Register")
+          
+        li.divider
+        li.has-dropdown
+          a(href="#Menu") Menu
+          ul.dropdown
+            li
+              a(href="test") Test
+
+        li.divider
+        li.has-form 
+          - if (user)
+            a(href="/logout", class="button") Logout
+          - else
+            #login.reveal-modal.small
+              a.close-reveal-modal &#215;
+
+            a(href="/login?reveal=1", class="button", data-reveal-ajax="true", data-reveal-id="login") Login

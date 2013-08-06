@@ -27,7 +27,7 @@ fs.readdirSync(__dirname + '/../controllers').forEach(function(controller) {
   if (fs.existsSync(fixtures_path)) {
     console.log('\n   %s:', controller);
 
-    var fixtures = fixtures = require(fixtures_path);
+    var fixtures = require(fixtures_path);
     for (var obj in fixtures) {
       console.log('     %s', obj);
       module.exports[obj] = fixtures[obj];
