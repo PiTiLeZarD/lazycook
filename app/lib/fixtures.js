@@ -1,5 +1,6 @@
 
-var db = require('./db');
+var db = require('./db')
+  , fs = require('fs');
 
 
 module.exports.clearDB = function(done) {
@@ -19,35 +20,19 @@ module.exports.clearDB = function(done) {
   });
 };
 
-module.exports.User = function(next) {
+console.log('Getting available fixtures...')
+fs.readdirSync(__dirname + '/../controllers').forEach(function(controller) {
+  var fixtures_path = __dirname + '/../controllers/' + controller + '/fixtures.js';
 
-  new db.User({
-      'login'   : 'admin'
-    , 'password': 'admin'
-    , 'email'   : 'admin-lazycook@mailinator.com'
-    , 'role'    : 'admin'
-  }).save(function(err) {
-    if (err) console.log('Error while saving admin', err);
+  if (fs.existsSync(fixtures_path)) {
+    console.log('\n   %s:', controller);
 
-    var nb_done = 0
-      , users = ['user1', 'user2', 'user3', 'user4'];
+    var fixtures = fixtures = require(fixtures_path);
+    for (var obj in fixtures) {
+      console.log('     %s', obj);
+      module.exports[obj] = fixtures[obj];
+    }
 
-    users.forEach( function( username ) {
-      new db.User({
-          'login'   : username
-        , 'password': username
-        , 'email'   : username + '-lazycook@mailinator.com'
-        , 'role'    : 'user'
-      }).save(function(err) {
-        if (err) {
-          console.log('Error while saving user', err);
-          next(err);
-        }
+  }
 
-        nb_done += 1;
-        if (nb_done == users.length) next(null);
-      });
-    });
-  });
-  
-};
+});
