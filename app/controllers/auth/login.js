@@ -10,13 +10,12 @@ exports.postlogin = {
         if (err) return next(err);
 
         if (!user) {
-          req.session.messages =  [info.message];
-          return res.redirect('/login')
+          req.flash('messages', [info.message]);
+          return res.redirect('/login');
         }
 
         req.login(user, function(err) {
-          if (err) return next(err);
-          req.session.messages = [];
+          if (err) next(err);
           return res.redirect('/');
         });
       })(req, res, next);

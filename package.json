@@ -21,6 +21,8 @@
     , "bcrypt": "*"
     , "mocha": "*"
     , "chai": "*"
+    , "express-validator": "*"
+    , "connect-flash": "*"
   }
   , "repository": {
       "type"  : "git"

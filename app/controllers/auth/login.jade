@@ -7,13 +7,6 @@ block main
     fieldset.small-12.columns
       legend Login
 
-      - if (session.messages && session.messages.length)
-        .row
-          .large-8.large-offset-2.columns
-            - each message in session.messages
-              .alert-box.radius.alert 
-                =message
-
       .row
         .small-6.columns
           label Login:

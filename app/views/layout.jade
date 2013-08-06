@@ -44,6 +44,17 @@ block content
                     a.close-reveal-modal &#215;
 
                   a(href="/login?reveal=1", class="button", data-reveal-ajax="true", data-reveal-id="login") Login
+
+
+  - var messages = flash('messages')
+  - if (messages && messages.length)
+    .row
+      .large-8.large-offset-2.columns
+        - each message in messages
+          .alert-box.radius.alert 
+            = message
+
+
   - if (reveal)
     .reveal
       block main

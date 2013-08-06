@@ -4,7 +4,9 @@ var express = require('express')
   , db = require('./lib/db')
   , MongoStore = require('connect-mongo')(express)
   , passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+  , LocalStrategy = require('passport-local').Strategy
+  , expressValidator = require('express-validator')
+  , flash = require('connect-flash');
 
 var app = module.exports = express();
 
@@ -26,6 +28,7 @@ app.configure( function (){
   } ));
   app.use(express.static(__dirname + '/public'));
   app.use(express.bodyParser());
+  app.use(expressValidator());
 });
 
 app.configure( 'dev', function (){
@@ -49,6 +52,7 @@ db.connect(app.get('mongourl'), function(err) {
     , maxAge: new Date(Date.now() + 3600000)
     , store: new MongoStore({ 'db' : db.mongo })
   })); 
+  app.use(flash());
 
   /* passport authentication */
   passport.use(new LocalStrategy(
@@ -90,6 +94,8 @@ db.connect(app.get('mongourl'), function(err) {
     res.locals.session = req.session;
     res.locals.user = req.isAuthenticated() ? req.user : false;
     res.locals.reveal = 'reveal' in req.query;
+    res.locals.flash =  function(key) { return req.flash(key); };
+
     next();
   });
 
