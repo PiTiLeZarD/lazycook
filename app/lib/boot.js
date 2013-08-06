@@ -15,13 +15,14 @@ module.exports = function(parent, options){
       , app = express()
       , viewengine = obj.viewengine || parent.get('view engine');
 
+    app.set('env', parent.get('env'));
     app.set('views', __dirname + '/../controllers/' + name);
     app.set('view engine', viewengine);
 
-    /* dynamicHelpers */
-    if (obj.dynamicHelpers) {
-      verbose && console.log('     has dynamicHelpers');
-      app.use(obj.dynamicHelpers);
+    /* bind middlewares for this module */
+    if (obj.middlewares) {
+      verbose && console.log('     has middlewares');
+      obj.middlewares( app, options );
     }
 
     /* before middleware support */
@@ -37,7 +38,7 @@ module.exports = function(parent, options){
     /* Bind all calls */
     for (var key in obj) {
       // "reserved" exports
-      if (~['name', 'prefix', 'before', 'dynamicHelpers'].indexOf(key)) continue;
+      if (~['name', 'prefix', 'before', 'middlewares'].indexOf(key)) continue;
       // route exports
       
       var method = obj[key].method || 'get'

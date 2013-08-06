@@ -3,8 +3,6 @@ var express = require('express')
   , nib = require('nib')
   , db = require('./lib/db')
   , MongoStore = require('connect-mongo')(express)
-  , passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy
   , expressValidator = require('express-validator')
   , flash = require('connect-flash');
 
@@ -53,41 +51,6 @@ db.connect(app.get('mongourl'), function(err) {
     , store: new MongoStore({ 'db' : db.mongo })
   })); 
   app.use(flash());
-
-  /* passport authentication */
-  passport.use(new LocalStrategy(
-      {
-          'usernameField': 'login'
-        , 'passwordField': 'password'
-      }
-    , function(login, password, next) {
-        db.User.findOne({ login: login }, function(err, user) {
-          if (err) return next(err);
-
-          if (!user) {
-            return next(null, false, { message: 'Incorrect login.' });
-          }
-          
-          user.comparePassword(password, function(err, isMatch) {
-            if (err) next(err, false);
-            if (isMatch) {
-              console.log('User %s logged in', login);
-              next(null, user);
-            }
-            else next(null, false, { message: 'Incorrect password.' });
-          });
-
-        });
-      }
-  ));
-  passport.serializeUser(function(user, done) {
-    done(null, user.login);
-  });
-  passport.deserializeUser(function(login, done) {
-    db.User.find({'login': login}, done);
-  });
-  app.use(passport.initialize());
-  app.use(passport.session());
 
   /* view helpers*/
   app.use(function(req, res, next){
