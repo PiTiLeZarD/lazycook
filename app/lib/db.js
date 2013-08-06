@@ -27,12 +27,18 @@ ignore_keys.push('ignore_keys');
 module.exports.ignore_keys = ignore_keys;
 
 console.log('Binding models...')
-fs.readdirSync(__dirname + '/../models').forEach(function(name) {
-  console.log('\n   model %s:', name);
-  var obj = require(__dirname + '/../models/' + name);
+fs.readdirSync(__dirname + '/../controllers').forEach(function(controller) {
+  var model_path = __dirname + '/../controllers/' + controller + '/model.js';
 
-  for (var model in obj) {
-    console.log('   -> %s', model);
-    module.exports[model] = obj[model];
+  if (fs.existsSync(model_path)) {
+    console.log('\n   %s:', controller);
+
+    var model = model = require(model_path);
+    for (var obj in model) {
+      console.log('     %s', obj);
+      module.exports[obj] = model[obj];
+    }
+
   }
+
 });

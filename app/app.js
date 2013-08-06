@@ -92,7 +92,6 @@ db.connect(app.get('mongourl'), function(err) {
   /* view helpers*/
   app.use(function(req, res, next){
     res.locals.session = req.session;
-    res.locals.user = req.isAuthenticated() ? req.user[0] : false;
     res.locals.reveal = 'reveal' in req.query;
     res.locals.flash =  req.flash.bind(req);
 

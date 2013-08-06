@@ -8,3 +8,8 @@ var login = require('./login')
     exports[exp] = ctrl[exp];
   }
 });
+
+exports.dynamicHelpers = function(req, res, next) {
+    res.locals.user = req.isAuthenticated() ? req.user[0] : false;
+    next();
+};

@@ -8,6 +8,7 @@ module.exports = function(parent, options){
   console.log('Routing...')
   fs.readdirSync(__dirname + '/../controllers').forEach(function(name){
     verbose && console.log('\n   %s:', name);
+
     var obj = require(__dirname + '/../controllers/' + name)
       , name = obj.name || name
       , prefix = obj.prefix || ''
@@ -17,7 +18,13 @@ module.exports = function(parent, options){
     app.set('views', __dirname + '/../controllers/' + name);
     app.set('view engine', viewengine);
 
-    // before middleware support
+    /* dynamicHelpers */
+    if (obj.dynamicHelpers) {
+      verbose && console.log('     has dynamicHelpers');
+      app.use(obj.dynamicHelpers);
+    }
+
+    /* before middleware support */
     if (obj.before) {
       path = '/' + name + '/:' + name + '_id';
       app.all(path, obj.before);
@@ -27,11 +34,10 @@ module.exports = function(parent, options){
       verbose && console.log('     ALL %s -> before', path);
     }
 
-    // generate routes based
-    // on the exported methods
+    /* Bind all calls */
     for (var key in obj) {
       // "reserved" exports
-      if (~['name', 'prefix', 'before'].indexOf(key)) continue;
+      if (~['name', 'prefix', 'before', 'dynamicHelpers'].indexOf(key)) continue;
       // route exports
       
       var method = obj[key].method || 'get'
@@ -43,7 +49,7 @@ module.exports = function(parent, options){
       app[method](path, call);
     }
 
-    // mount the app
+    /* mount the controller to the main app */
     parent.use(app);
   });
 };
