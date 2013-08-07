@@ -7,6 +7,9 @@ db.connect(process.env.MONGOURL, function(err) {
     console.log('Exiting...');
     process.exit();
   }
+
+  db.initialize();
+  fixtures.initialize();
   
   var table_count = Object.keys(db).length
     , table_done = db.ignore_keys.length; 

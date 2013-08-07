@@ -42,6 +42,9 @@ db.connect(app.get('mongourl'), function(err) {
     console.log('Exiting...');
     process.exit();
   }
+  var options = { verbose: app.get('env') === 'dev' };
+
+  db.initialize(options);
 
   /* sessions */
   app.use(express.cookieParser());
@@ -64,8 +67,8 @@ db.connect(app.get('mongourl'), function(err) {
   /* our dynamic menu */
   require('./lib/dynamicMenu').middleware(app);
 
-  /* Initialise controllers, routing... */
-  require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });
+  /* Initialize controllers, routing... */
+  require('./lib/boot')(app, options);
 
   /* Start server */
   console.log('Express server listening on port ' + app.get('port'));

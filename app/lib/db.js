@@ -26,27 +26,34 @@ module.exports.mongo = null;
 ignore_keys.push('ignore_keys');
 module.exports.ignore_keys = ignore_keys;
 
-var mods_path = __dirname + '/../mods/'; 
-console.log('Binding models using path %s...', mods_path)
-fs.readdirSync(mods_path).forEach(function(mod) {
-  var model_path = __dirname + '/../mods/' + mod + '/models/';
+ignore_keys.push('initialize');
+module.exports.initialize = function(options) {
+  var options = options || {}
+    , verbose = options.verbose
+    , mods_path = __dirname + '/../mods/';
 
-  if (fs.existsSync(model_path)) {
-    console.log('\n   Module %s:', mod);
+  verbose && console.log('Binding models using path %s...', mods_path)
+  fs.readdirSync(mods_path).forEach(function(mod) {
+    var model_path = __dirname + '/../mods/' + mod + '/models/';
 
-    fs.readdirSync(model_path).forEach(function(model_name) {
-      if (model_name != 'fixtures.js') {
+    if (fs.existsSync(model_path)) {
+      verbose && console.log('\n   Module %s:', mod);
 
-        console.log('     Model %s', model_name)
-        var model = require(model_path + model_name);
-        for (var obj in model) {
-          console.log('       %s', obj);
-          module.exports[obj] = model[obj];
+      fs.readdirSync(model_path).forEach(function(model_name) {
+        if (model_name != 'fixtures.js') {
+
+          verbose && console.log('     Model %s', model_name)
+          var model = require(model_path + model_name);
+          for (var obj in model) {
+            verbose && console.log('       %s', obj);
+            module.exports[obj] = model[obj];
+          }
+
         }
+      });
+    }
 
-      }
-    });
-  }
+  });
+  verbose && console.log('');
 
-});
-console.log('');
+};
