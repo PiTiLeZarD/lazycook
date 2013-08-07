@@ -1,3 +1,21 @@
+mixin link(options)
+  a(href=options.href, title=(options.title || options.name))= options.name
+
+mixin showMenu(menu)
+  if menu.data.length
+    each menuitem in menu.data
+      if menuitem.data
+        li.has-dropdown(id=menu.id)
+          +link(menu.title)
+          ul.dropdown
+            +showMenu(menuitem)
+      else
+        li
+          +link(menuitem)
+  else
+    li
+      +link(menu.title)
+
 nav.top-bar
   ul.title-area
     li.name 
@@ -10,33 +28,11 @@ nav.top-bar
   section.top-bar-section
     block menu
       ul.right
-        li.divider
-        li.has-form 
-          - if (user)
-            a(href="#", onclick="return false;")
-              | Welcome 
-              = ' ' + user.login
-          - else
-            form(action="/user/register", method="POST")
-              ul(class="small-block-grid-2")
-                li
-                  input(type="text", name="email", placeholder="Your e-mail")
-                li
-                  input(type="submit", class="button", value="Register")
-          
-        li.divider
-        li.has-dropdown
-          a(href="#Menu") Menu
-          ul.dropdown
-            li
-              a(href="test") Test
+        block left
 
-        li.divider
-        li.has-form 
-          - if (user)
-            a(href="/logout", class="button") Logout
-          - else
-            #login.reveal-modal.small
-              a.close-reveal-modal &#215;
+        block middle
+          li.divider
+          - each menu in dynamicMenu
+            +showMenu( menu )
 
-            a(href="/login?reveal=1", class="button", data-reveal-ajax="true", data-reveal-id="login") Login
+        block right

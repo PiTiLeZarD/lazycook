@@ -62,7 +62,7 @@ db.connect(app.get('mongourl'), function(err) {
   });
 
   /* our dynamic menu */
-  app.use(require('./lib/dynamicMenu'));
+  require('./lib/dynamicMenu')(app);
 
   /* Initialise controllers, routing... */
   require('./lib/boot')(app, { verbose: app.get('env') === 'dev' });

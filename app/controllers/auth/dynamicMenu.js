@@ -1,6 +1,6 @@
 
 module.exports = function(req, res, menu) {
-  menu.addBlock('first', 'register_miniform');
-  menu.addBlock('last', 'auth_button');
+  menu.addBlock('first', res.render('menuRegister'));
+  menu.addBlock('right', res.render('menuLoginButton'));
   menu.addItem('/users/list');
 };
