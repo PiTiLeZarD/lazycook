@@ -26,19 +26,27 @@ module.exports.mongo = null;
 ignore_keys.push('ignore_keys');
 module.exports.ignore_keys = ignore_keys;
 
-console.log('Binding models...')
-fs.readdirSync(__dirname + '/../controllers').forEach(function(controller) {
-  var model_path = __dirname + '/../controllers/' + controller + '/model.js';
+var mods_path = __dirname + '/../mods/'; 
+console.log('Binding models using path %s...', mods_path)
+fs.readdirSync(mods_path).forEach(function(mod) {
+  var model_path = __dirname + '/../mods/' + mod + '/models/';
 
   if (fs.existsSync(model_path)) {
-    console.log('\n   %s:', controller);
+    console.log('\n   Module %s:', mod);
 
-    var model = model = require(model_path);
-    for (var obj in model) {
-      console.log('     %s', obj);
-      module.exports[obj] = model[obj];
-    }
+    fs.readdirSync(model_path).forEach(function(model_name) {
+      if (model_name != 'fixtures.js') {
 
+        console.log('     Model %s', model_name)
+        var model = require(model_path + model_name);
+        for (var obj in model) {
+          console.log('       %s', obj);
+          module.exports[obj] = model[obj];
+        }
+
+      }
+    });
   }
 
 });
+console.log('');

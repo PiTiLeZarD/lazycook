@@ -1,6 +1,5 @@
 
-var express = require('express')
-  , fs = require('fs');
+var express = require('express');
 
 var DynamicMenu = function(id) {
   this.id = id;

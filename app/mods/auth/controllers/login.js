@@ -1,8 +1,8 @@
 var passport = require('passport')
-  , db = require('../../lib/db');
+  , db = require('../../../lib/db');
 
 
-exports.postlogin = {
+module.exports.postlogin = {
     'path': '/login'
   , 'method': 'post'
   , 'fn': function(req, res, next) {
@@ -22,14 +22,14 @@ exports.postlogin = {
     }
 };
 
-exports.login = {
+module.exports.login = {
     'path': '/login'
   , 'fn': function(req, res) {
       res.render('login');
     }
 };
 
-exports.logout = {
+module.exports.logout = {
     'path': '/logout'
   , 'fn': function(req, res) {
       req.logout();

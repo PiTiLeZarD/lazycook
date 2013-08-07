@@ -1,20 +1,10 @@
 
-var db = require('../../lib/db')
+var db = require('../../../lib/db')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
-  , login = require('./login')
-  , register = require('./register')
-  , DynamicMenu = require('../../lib/dynamicMenu').DynamicMenu;
+  , DynamicMenu = require('../../../lib/dynamicMenu').DynamicMenu;
 
-
-/* our two sub controllers */
-[login, register].forEach(function(ctrl) {
-  for (exp in ctrl) {
-    exports[exp] = ctrl[exp];
-  }
-});
-
-exports.middlewares = function( app, options ) {
+module.exports = function( app, options ) {
   var verbose = options.verbose;
 
   /* passport authentication */

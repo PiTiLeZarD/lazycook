@@ -1,7 +1,7 @@
 var passport = require('passport')
-  , db = require('../../lib/db');
+  , db = require('../../../lib/db');
 
-exports.postregister = {
+module.exports.postregister = {
     'path': '/user/register'
   , 'method': 'post'
   , 'fn': function(req, res, next) {
@@ -22,7 +22,7 @@ exports.postregister = {
     }
 }
 
-exports.register = {
+module.exports.register = {
     'path': '/user/register'
   , 'fn': function(req, res, next) {
       var email = req.flash('register_email');

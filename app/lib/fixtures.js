@@ -20,16 +20,17 @@ module.exports.clearDB = function(done) {
   });
 };
 
-console.log('Getting available fixtures...')
-fs.readdirSync(__dirname + '/../controllers').forEach(function(controller) {
-  var fixtures_path = __dirname + '/../controllers/' + controller + '/fixtures.js';
+var mods_path = __dirname + '/../mods/'; 
+console.log('Getting available fixtures with path %s...', mods_path)
+fs.readdirSync(mods_path).forEach(function(mod) {
+  var fixtures_path = mods_path + mod + '/models/fixtures.js';
 
   if (fs.existsSync(fixtures_path)) {
-    console.log('\n   %s:', controller);
+    console.log('\n   Module %s:', mod);
 
     var fixtures = require(fixtures_path);
     for (var obj in fixtures) {
-      console.log('     %s', obj);
+      console.log('       %s', obj);
       module.exports[obj] = fixtures[obj];
     }
 
