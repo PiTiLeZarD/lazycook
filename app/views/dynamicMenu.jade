@@ -2,19 +2,20 @@ mixin link(options)
   a(href=options.href, title=(options.title || options.name))= options.name
 
 mixin showMenu(menu)
-  if menu.data.length
-    each menuitem in menu.data
-      if menuitem.data
-        li.has-dropdown(id=menu.id)
-          +link(menu.title)
-          ul.dropdown
-            +showMenu(menuitem)
-      else
-        li
-          +link(menuitem)
-  else
-    li
+  li(id=menu.id, class=(menu.data.length ? 'has-dropdown' : (menu.html ? 'has-form' : '')))
+    if menu.html
+      !=menu.html
+    else
       +link(menu.title)
+
+      if menu.data.length
+        ul.dropdown
+          each menuitem in menu.data
+            if menuitem.data
+              +showMenu(menuitem)
+            else
+              li
+                +link(menuitem)
 
 nav.top-bar
   ul.title-area
@@ -25,14 +26,9 @@ nav.top-bar
       a 
         span Menu
 
-  section.top-bar-section
-    block menu
+  block menu
+    section.top-bar-section
       ul.right
-        block left
-
-        block middle
-          li.divider
-          - each menu in dynamicMenu
-            +showMenu( menu )
-
-        block right
+        li.divider
+        - each menu in dynamicMenu
+          +showMenu( menu )

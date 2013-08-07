@@ -1,0 +1,11 @@
+- if (user)
+  a(href="#", onclick="return false;")
+    | Welcome 
+    = ' ' + user.login
+- else
+  form(action="/user/register", method="POST")
+    ul(class="small-block-grid-2")
+      li
+        input(type="text", name="email", placeholder="Your e-mail")
+      li
+        input(type="submit", class="button", value="Register")

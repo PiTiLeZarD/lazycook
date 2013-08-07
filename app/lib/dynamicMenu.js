@@ -6,6 +6,7 @@ var DynamicMenu = function(id) {
   this.id = id;
   this.data = [];
   this.title = {'name': 'Menu', 'href': '#'};
+  this.html = null;
 };
 DynamicMenu.prototype.addItem = function(item) {
   this.data.push(item);
@@ -25,31 +26,23 @@ DynamicMenu.prototype.addLink = function(name, href, title) {
   });
 };
 
+module.exports.DynamicMenu = DynamicMenu;
 
-module.exports = function(parent) {
+module.exports.middleware = function(parent) {
   var app = express();
 
   app.use(function(req, res, next) {
-    var mainMenu = new DynamicMenu('main');
 
-    var submenu = new DynamicMenu('sub');
-    submenu.setTitle('SubMenu');
+    /* our menu list, feel free to tweak it */
+    res.locals.dynamicMenu = [ new DynamicMenu('dynamicMenu') ];
 
-    var subsubmenu = new DynamicMenu('subsub');
-    subsubmenu.setTitle('SubSubMenu');
-    subsubmenu.addLink('Menu test');
-    subsubmenu.addLink('Menu test2');
-    subsubmenu.addLink('Menu test3');
-    subsubmenu.addLink('Menu test4');
+    /* add a convenience function */
+    res.addMenuLink = function(name, href, title) {
+      res.locals.dynamicMenu.forEach( function(menu) {
+        if (menu.id == 'dynamicMenu') menu.addLink(name, href, title);
+      });
+    };
 
-    submenu.addItem(subsubmenu);
-    mainMenu.addItem(submenu);
-
-    var mainMenu2 = new DynamicMenu('main2');
-    mainMenu2.setTitle('Other Menu');
-
-
-    res.locals.dynamicMenu = [mainMenu, mainMenu2];
     next();
   });
 

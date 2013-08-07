@@ -1,0 +1,7 @@
+- if (user)
+  a(href="/logout", class="button") Logout
+- else
+  #login.reveal-modal.small
+    a.close-reveal-modal &#215;
+
+  a(href="/login?reveal=1", class="button", data-reveal-ajax="true", data-reveal-id="login") Login

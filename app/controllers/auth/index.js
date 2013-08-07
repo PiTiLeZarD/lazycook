@@ -3,7 +3,8 @@ var db = require('../../lib/db')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , login = require('./login')
-  , register = require('./register');
+  , register = require('./register')
+  , DynamicMenu = require('../../lib/dynamicMenu').DynamicMenu;
 
 
 /* our two sub controllers */
@@ -56,7 +57,44 @@ exports.middlewares = function( app, options ) {
   /* our dynamic helper */
   app.use(function(req, res, next) {
     res.locals.user = req.isAuthenticated() ? req.user[0] : false;
+    res.addMenuLink('Users list', '/users');
 
-    next();
+    /* be sure to call next when we're ready */
+    var step = 0;
+    var nextStep = function() {
+      step += 1;
+      if (step == 2) next();
+    }
+
+    /* render our register menu */
+    app.render('menuRegister', {'_locals': res.locals}, function(err, html) {
+      if (err) {
+        console.log(err);
+        nextStep();
+        return;
+      }
+  
+      var registerMenu = new DynamicMenu('registerMenu');
+      registerMenu.html = html; 
+      res.locals.dynamicMenu.unshift(registerMenu);
+
+      nextStep();
+    });
+
+    /* render our login menu */
+    app.render('menuLoginButton', {'_locals': res.locals}, function(err, html) {
+      if (err) {
+        console.log(err);
+        nextStep();
+        return;
+      }
+  
+      var loginMenu = new DynamicMenu('loginButton');
+      loginMenu.html = html; 
+      res.locals.dynamicMenu.push(loginMenu);
+
+      nextStep();
+    });
+
   });
 }
