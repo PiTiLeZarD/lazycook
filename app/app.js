@@ -1,4 +1,5 @@
-var express = require('express')
+var config = require('./config')
+  , express = require('express')
   , stylus = require('stylus')
   , nib = require('nib')
   , db = require('./lib/db')
@@ -10,8 +11,8 @@ var app = module.exports = express();
 
 /* Global configs */
 app.configure( function (){
-  app.set('port', process.env.PORT);
-  app.set('mongourl', process.env.MONGOURL);
+  app.set('port', config.port || 4000);
+  app.set('mongourl', config.mongourl);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
 
@@ -66,6 +67,23 @@ db.connect(app.get('mongourl'), function(err) {
 
   /* our dynamic menu */
   require('./lib/dynamicMenu').middleware(app);
+
+  /* basic param error handling */
+  app.use(function(req, res, next) {
+    req.assertErrorsToHome = function() {
+      var errors = req.validationErrors();
+      if (errors && errors.length) {
+        var messages = null;
+        errors.forEach(function(val) {
+          (messages = messages || []).push(val['msg']);
+        });
+        req.flash('messages', messages);
+        return res.redirect('/');
+      }
+      return false;
+    };
+    next();
+  });
 
   /* Initialize controllers, routing... */
   require('./lib/boot')(app, options);

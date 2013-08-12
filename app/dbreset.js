@@ -1,8 +1,9 @@
 
-var db = require('./lib/db')
+var config = require('./config')
+  , db = require('./lib/db')
   , fixtures = require('./lib/fixtures');
 
-db.connect(process.env.MONGOURL, function(err) {
+db.connect(config.mongourl, function(err) {
   if (err) {
     console.log('Exiting...');
     process.exit();

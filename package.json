@@ -23,6 +23,7 @@
     , "chai": "*"
     , "express-validator": "*"
     , "connect-flash": "*"
+    , "nodemailer": "*"
   }
   , "repository": {
       "type"  : "git"
