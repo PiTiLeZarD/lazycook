@@ -1,8 +1,16 @@
-# lazycook
+# lazycook framework
 
-A 100% Javascript cooking app (or rather a try at it)
+(This is still a work in progress framework)
 
-Using:
+A boilerplate for your nodeJS apps. You need to have a new app kicking off? Use this, and more than half of the job is done already. All bundled frameworks are preconfigured in a sleak organization.
+
+The main [app.js](https://github.com/PiTiLeZarD/lazycook/blob/master/app/app.js), configures everything for you, but you develop modules that are sortof sub-apps... Each module can tweak pretty much everything, they use an easy and well known MVC pattern. 
+
+List of modules:
+ * [Auth](https://github.com/PiTiLeZarD/lazycook/tree/master/app/mods/auth) (WIP)
+      Enables your apps to have users registering themselves, logging in and doing all the cool stuffs you want them to do.
+
+Bundled frameworks:
  * Server: [nodeJS](http://nodejs.org/) / [expressJS](http://expressjs.com/)
  * Templating: [Jade](http://jade-lang.com/)  
  * CSS: [Stylus](http://learnboost.github.io/stylus/docs/js.html) / [Nib](http://visionmedia.github.io/nib/)
@@ -11,6 +19,10 @@ Using:
  * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/)
  * Authentication: [PassportJS](http://passportjs.org/) / [NodeACL](https://github.com/optimalbits/node_acl)
  * Testing: [Karma](http://karma-runner.github.io) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/) / [Mocha](http://visionmedia.github.io/mocha/) / [chai](http://chaijs.com/)
+ * Other: 
+  * [express-validator](https://github.com/ctavan/express-validator)
+  * [Connect-Flash](https://github.com/jaredhanson/connect-flash)
+  * [Nodemailer](https://github.com/andris9/Nodemailer)
  
 ## Installation
 
@@ -26,11 +38,14 @@ Using:
 
  * `git clone https://github.com/PiTiLeZarD/lazycook.git`
  * `cd lazycook`
- * `make dev`
+ * launch db with `make db` stop it with `make dbstop` and reset it with `make dbreset`
+ * launch node with `make dev` (or `make prod` for production environment)
  
 This should install all necessary libs and launch the node server
 
 ## Testing
+
+I'm really far away from the perfect solution here, lots of different frameworks and writing style due to node testing and angular testing being quite different... if you have ideas, please fill me in!
 
 ### Prerequisites
  * make sure that you have [PhantomJS](http://phantomjs.org/) installed
@@ -40,6 +55,6 @@ This should install all necessary libs and launch the node server
  * `make e2e_tests (For end to end testing)`
 
 ## Future
- * [Node-validator](https://github.com/chriso/node-validator) and [express-validator](https://github.com/ctavan/express-validator)
- * [Connect-Flash](https://github.com/jaredhanson/connect-flash)
+ * finish the auth module with facebook/etc... auth and proper acl
+ * clear out the test thingy
  * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
