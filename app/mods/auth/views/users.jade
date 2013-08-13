@@ -6,14 +6,23 @@ block content
   script(type="text/javascript", src="/public/auth/users.js")
 
   .row
-    h2 Users Management
+    .large-8.columns
+      h2 Users Management
+    .large-4.columns(style="padding-top:1em;")
+      .row.collapse
+        .small-9.columns
+          input(type="search", name="search", ng-model="search", placeholder="Filter values...")
+        .small-3.columns
+          span.postfix.radius Filter
 
     table(ng-controller="UsersCtrl").small-12
       thead
         tr
           th Login
           th Email
+          th Role
       tbody
-        tr(ng-repeat="user in users")
+        tr(ng-repeat="user in users | filter:search")
           td {{user.login}}
           td {{user.email}}
+          td {{user.role}}
