@@ -1,0 +1,44 @@
+extend ../../../views/layout
+
+block content
+  #livechat.reveal-modal.expand
+    a.close-reveal-modal &#215;
+
+  .row
+    .small-8.columns
+      h2 Contact
+    .small-4.columns.text-right
+      a(class="radius button", href="/contact/livechat?reveal=1", data-reveal-ajax="true", data-reveal-id="livechat") Livechat with us
+
+  hr
+
+  .row
+    p Contact us here and there
+
+  hr
+  
+  .row
+    .large-7.columns
+
+      form(action="/contact", method="post")
+        .row
+          .small-3.columns
+            label(for="fullname").inline Full name
+          .small-9.columns
+            input(type="text", name="fullname", placeholder="Enter here your fullname")
+
+        .row
+          .small-3.columns
+            label(for="email").inline Email
+          .small-9.columns
+            input(type="text", name="email", placeholder="Use a valid email for us to contact back")
+
+        .row
+          .small-3.columns
+            label(for="message").inline Full name
+          .small-9.columns
+            textarea(name="message")
+
+
+    .large-4.columns.large-offset-1
+      p Here a map
