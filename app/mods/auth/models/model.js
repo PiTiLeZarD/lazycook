@@ -13,14 +13,9 @@ var userSchema = mongoose.Schema({
   , emails       : [
     {
         text: String
+      , html: String
       , from: String
       , subject: String
-      , attachment: [{
-            data: String
-          , path: String
-          , name: String
-          , type: String
-        }]
       , date: { type: Date, default: Date.now }
     }
   ]
@@ -55,9 +50,15 @@ userSchema.methods.sendRegisterEmail = function(cb) {
       };
 
   transport.sendMail(message, function(err, response){
+    if (err) return cb(err);
+
     self.emails.push(message);
     transport.close();
-    cb(err, response);
+
+    self.save(function(err) {
+      if (err) return cb(err);
+      cb(null, response);
+    });
   });
 };
 

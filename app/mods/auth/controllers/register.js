@@ -125,6 +125,7 @@ module.exports.postconfirm = {
 module.exports.welcome = {
     'path': '/user/welcome'
   , 'fn': function(req, res, next) {
+      if (!req.isAuthenticated()) return res.redirect('/');
       res.render('welcome');
     }
 }

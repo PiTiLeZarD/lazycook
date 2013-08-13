@@ -7,3 +7,13 @@ block content
     | Registering user with email
     = ' ' + user.email
     = ' ' + user.login
+
+  hr
+  p Content of the htlm email
+  pre
+    =user.emails[user.emails.length - 1].html
+
+  hr
+  p
+    | Next step click here 
+    a(href='/user/confirm/' + user.login) Confirm
