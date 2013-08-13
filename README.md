@@ -56,5 +56,7 @@ I'm really far away from the perfect solution here, lots of different frameworks
 
 ## Future
  * finish the auth module with facebook/etc... auth and proper acl
+ * I18n L10n
  * clear out the test thingy
  * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
+  * also later: use npm for mods (I didn't started this way, and I'd like to go on with functionalities first, I'll do some refactoring if it's a good idea)
