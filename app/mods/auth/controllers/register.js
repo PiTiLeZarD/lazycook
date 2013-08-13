@@ -12,46 +12,43 @@ module.exports.postregister = {
       var email = req.body.email
         , login = crypto.randomBytes(20).toString('hex');
       
-      new db.User({
-          'login': login
-        , 'email': email
-        , 'role': 'user'
-      }).save(function(err) {
+      /* first check if there is a user with this email */
+      db.User.findOne({'email': email}, function(err, user) {
         if (err) return next(err);
 
-        var user = db.User.findOne({'login':login, 'email': email}, function(err, user) {
+        if (user) {
+          req.flash('messages', ['Email already assigned']);
+          return res.redirect('/');
+        }
+
+        /* the create our user with his email and the login being the hash */
+        new db.User({
+            'login': login
+          , 'email': email
+          , 'role': 'user'
+        }).save(function(err, user) {
           if (err) return next(err);
 
+          /* send the registration email */
           user.sendRegisterEmail(function(err) {
 
             if (err) {
-
+              /* if we have trouble sending this email, remove the user */
               user.remove(function(rerr) {
                 if (rerr) return next(rerr);
                 return next(err);
               });
-
             } else {
-
-              req.flash('register_email', email);
-              res.redirect('/user/register');
+              /* otherwise redirect*/
+              res.render('register', {'user': user});
             }
 
           });
 
         });
+
       });
 
-    }
-}
-
-module.exports.register = {
-    'path': '/user/register'
-  , 'fn': function(req, res, next) {
-      var email = req.flash('register_email');
-      if (!email || !email.length) return res.redirect('/');
-
-      res.render('register', {'email': email});
     }
 }
 

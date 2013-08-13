@@ -45,8 +45,7 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.sendRegisterEmail = function(cb) {
   var self = this
-    , nodemailer = require("nodemailer")
-    , transport = nodemailer.createTransport("SMTP", config.smtp)
+    , transport = require("nodemailer").createTransport(config.nodemailer.transport, config.nodemailer.config)
     , message = {
           from :    "Lazycook <lazycook@mailinator.com>"
         , to :      this.email

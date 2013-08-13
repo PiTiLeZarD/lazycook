@@ -4,13 +4,12 @@ var config = {
         port: 4000
       , mongourl: 'mongodb://localhost:4001/lazycook'
 
-      , smtp: 'See http://www.nodemailer.com/ for more details'
-      , smtp: {
-          service: "Gmail"
-        , auth: {
-            user: "gmail.user@gmail.com"
-          , pass: "userpass"
-        }
+      , nodemailer: 'See http://www.nodemailer.com/ for more details'
+      , nodemailer: {
+          transport: 'sendmail'
+        , config: {
+            path: '/usr/sbin/sendmail'
+          }
       }
     }
 };
