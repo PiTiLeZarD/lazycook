@@ -56,6 +56,7 @@ I'm really far away from the perfect solution here, lots of different frameworks
 
 ## Future
  * finish the auth module with facebook/etc... auth and proper acl
+ * [Wraith](http://responsivenews.co.uk/post/56884056177/wraith) ?
  * I18n L10n
  * clear out the test thingy
  * later on: SEO with sitemap and parrallel static site generation (maybe [GruntJS](http://gruntjs.com/getting-started) and PhantomJS?)
