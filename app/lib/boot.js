@@ -16,6 +16,13 @@ module.exports = function(parent, options){
       , app = express()
       , viewengine = module.viewengine || parent.get('view engine');
 
+    /* statics for this module */
+    var public_path = mods_path + name + '/public';
+    if (fs.existsSync(public_path)) {
+      verbose && console.log('     monting %s/ on /public/%s/', public_path, name)
+      app.use('/public/' + name, express.static(public_path));
+    }
+
     app.set('env', parent.get('env'));
     app.set('views', mods_path + name + '/views/');
     app.set('view engine', viewengine);

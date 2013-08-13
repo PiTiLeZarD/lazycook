@@ -1,5 +1,4 @@
-var passport = require('passport')
-  , db = require('../../../lib/db')
+var db = require('../../../lib/db')
   , crypto = require('crypto');
 
 module.exports.postregister = {

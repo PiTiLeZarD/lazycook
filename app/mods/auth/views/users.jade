@@ -1,0 +1,19 @@
+
+extend ../../../views/layout
+
+block content
+
+  script(type="text/javascript", src="/public/auth/users.js")
+
+  .row
+    h2 Users Management
+
+    table(ng-controller="UsersCtrl").small-12
+      thead
+        tr
+          th Login
+          th Email
+      tbody
+        tr(ng-repeat="user in users")
+          td {{user.login}}
+          td {{user.email}}
