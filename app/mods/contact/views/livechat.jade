@@ -18,7 +18,11 @@ block content
 
     #user.small-12.columns
       form(ng-submit="sendMessage()")
-        input(type="text", disabled="disabled", ng-model="login")
-        input(type="text", name="input", ng-model="message")
-        input(type='submit', value="Send", class="radius button")
+        .row.collapse
+          .small-2.columns
+            span.prefix {{login}}
+
+          .small-10.columns
+            input(type="text", name="message", ng-model="message", placeholder="Type your message here...")
+
 
