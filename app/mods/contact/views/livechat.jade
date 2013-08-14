@@ -1,14 +1,44 @@
 extend ../../../views/layout
 
 block header_adds
+  script(type="text/javascript", src="/public/contact/livechat.js")
   link(rel='stylesheet', href='/public/contact/livechat.css')
 
 block content
   .row
     
     #chat.small-12.columns
-      .system.
-        Connecting to livechat...
+      .system
+        .info
+          .name System
+          .date Now
+        | Connecting to livechat...
+
+      .system
+        .info
+          .name System
+          .date Now
+        | Connected!
+
+      .system
+        .info
+          .name System
+          .date Now
+        | You're speaking with UserRemote
+
+      .remote
+        .info
+          .name UserRemote
+          .date Now
+        span.user UserRemote
+        | Hello, how can I help you today?
+
+      .local
+        .info
+          .name Me
+          .date Now
+        | Hi I have a problem
 
     #user.small-12.columns
       input(type="text", name="input")
+
