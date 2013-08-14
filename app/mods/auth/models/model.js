@@ -10,15 +10,13 @@ var userSchema = mongoose.Schema({
   , email        : { type: String, required: true, unique: true }
   , role         : { type: String, default: 'user' }
   , date_create  : { type: Date,   default: Date.now }
-  , emails       : [
-    {
-        text: String
-      , html: String
-      , from: String
-      , subject: String
-      , date: { type: Date, default: Date.now }
-    }
-  ]
+  , emails       : [{
+      text: String
+    , html: String
+    , from: String
+    , subject: String
+    , date: { type: Date, default: Date.now }
+  }]
 });
 
 userSchema.pre('save', function(next) {

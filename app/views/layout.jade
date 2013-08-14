@@ -2,8 +2,9 @@ extend layout.base
 
 block bodyContent
 
-  - if (dynamicMenu)
-    include dynamicMenu
+  block menu
+    - if (dynamicMenu)
+      include dynamicMenu
 
   - var messages = flash('messages')
   - if (messages && messages.length)

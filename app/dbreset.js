@@ -1,7 +1,16 @@
 
 var config = require('./config')
   , db = require('./lib/db')
-  , fixtures = require('./lib/fixtures');
+  , fixtures = require('./lib/fixtures')
+  , mongoose = require('mongoose');
+
+/* sneak add the session schema */
+var sessionSchema = mongoose.Schema({
+    sid: String
+  , session: String
+  , expires: Date
+});
+db.Session = mongoose.model('Session', sessionSchema);
 
 db.connect(config.mongourl, function(err) {
   if (err) {
@@ -12,11 +21,13 @@ db.connect(config.mongourl, function(err) {
   db.initialize();
   fixtures.initialize();
   
-  var table_count = Object.keys(db).length
-  
+
+  var tables = Object.keys(db)
+    , table_count = tables.length;
+
   var deleteTable = function(next) {
     if (table_count--) {
-      var table = Object.keys(db)[table_count];
+      var table = tables[table_count];
 
       if (!!~db.ignore_keys.indexOf(table)) return next();
 

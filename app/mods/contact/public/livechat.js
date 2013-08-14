@@ -34,11 +34,19 @@ angular.module('lazycook', []).factory('socket', function ($rootScope) {
 var LiveChatCtrl = ['$scope', 'socket', function($scope, socket) {
 
   socket.on('init', function () {
-    /* TODO: add initial messages and users here */
     $scope.messages = [];
     $scope.users = [];
     $scope.login = null;
-    console.log('init');
+  });
+
+  socket.on('init:messages', function (messages) {
+    $.each(messages, function(i, message) {
+      $scope.messages.push(message);
+    })
+  });
+
+  socket.on('user:list', function (users) {
+    $scope.users = users;
   });
 
   socket.on('user:join', function (user) {
