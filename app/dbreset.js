@@ -13,23 +13,35 @@ db.connect(config.mongourl, function(err) {
   fixtures.initialize();
   
   var table_count = Object.keys(db).length
-    , table_done = db.ignore_keys.length; 
+  
+  var deleteTable = function(next) {
+    if (table_count--) {
+      var table = Object.keys(db)[table_count];
 
-  for (var table in db) {
-    if (db.ignore_keys.indexOf(table) !== -1) continue;
+      if (!!~db.ignore_keys.indexOf(table)) return next();
 
-    console.log('> deleting %s', table);
-    db[table].find().remove(function(err) {
-      console.log('> %s done, adding fixtures', table);
-      fixtures[table](function() {
-        console.log('> fixtures for %s done', table);
-        table_done += 1;
-        if (table_done == table_count) {
-          console.log('All tables done, exiting!')
-          process.exit();
+      console.log('> deleting %s', table);
+      db[table].find().remove(function(err) {
+        if (table in fixtures) {
+          console.log('> %s done, adding fixtures', table);
+          fixtures[table](function() {
+            console.log('> fixtures for %s done', table);
+            next();
+          });
+        } else {
+          next();
         }
       });
-    });
-  }
+
+    } else {
+      console.log('All tables done, exiting!')
+      process.exit(0);
+    }
+  }; 
+
+  var next = function() {
+    deleteTable(next);
+  };
+  deleteTable(next);
 });
 
