@@ -8,10 +8,9 @@
     , "email" : "contact@jadami.com"
   }
   , "dependencies": {
-      "express": "3.3.2"
+      "express": "*"
     , "jade": "*"
     , "stylus": "*"
-    , "nib": "*"
     , "karma": "*"
     , "mongoose": "*"
     , "connect-mongo": "*"

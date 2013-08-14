@@ -1,5 +1,14 @@
 extend ../../../views/layout
 
+block header_adds
+  link(rel='stylesheet', href='/public/contact/livechat.css')
+
 block content
   .row
-    Here the livechat
+    
+    #chat.small-12.columns
+      .system.
+        Connecting to livechat...
+
+    #user.small-12.columns
+      input(type="text", name="input")

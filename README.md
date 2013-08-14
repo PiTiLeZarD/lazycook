@@ -13,7 +13,7 @@ List of modules:
 Bundled frameworks:
  * Server: [nodeJS](http://nodejs.org/) / [expressJS](http://expressjs.com/)
  * Templating: [Jade](http://jade-lang.com/)  
- * CSS: [Stylus](http://learnboost.github.io/stylus/docs/js.html) / [Nib](http://visionmedia.github.io/nib/)
+ * CSS: [Stylus](http://learnboost.github.io/stylus/docs/js.html)
  * Responsive Front-end: [Foundation4](http://foundation.zurb.com)
  * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
  * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/)

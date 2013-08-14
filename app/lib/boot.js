@@ -1,5 +1,6 @@
 
 var express = require('express')
+  , stylus = require('stylus')
   , fs = require('fs');
 
 module.exports = function(parent, options){
@@ -17,9 +18,26 @@ module.exports = function(parent, options){
       , viewengine = module.viewengine || parent.get('view engine');
 
     /* statics for this module */
-    var public_path = mods_path + name + '/public';
+    var public_path = mods_path + name + '/public/';
     if (fs.existsSync(public_path)) {
-      verbose && console.log('     monting %s/ on /public/%s/', public_path, name)
+      verbose && console.log('     Public found here %s', public_path);
+
+      /* check for use of stylus in this public folder */
+      var use_stylus = false;
+      fs.readdirSync(public_path).forEach(function(elt) {
+        if (/\.styl$/.test(elt)) use_stylus = true;
+      });
+      if (use_stylus) {
+        verbose && console.log('       Using stylus');
+        app.use(stylus.middleware( { 
+            src: public_path
+          , compile: function (str, path) { 
+              return stylus(str).set('filename', path);
+            } 
+        } ));
+      }
+
+      verbose && console.log('       Monting public on /public/%s/', name)
       app.use('/public/' + name, express.static(public_path));
     }
 

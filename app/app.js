@@ -1,7 +1,6 @@
 var config = require('./config')
   , express = require('express')
   , stylus = require('stylus')
-  , nib = require('nib')
   , db = require('./lib/db')
   , MongoStore = require('connect-mongo')(express)
   , expressValidator = require('express-validator')
@@ -22,8 +21,8 @@ app.configure( function (){
   app.use(stylus.middleware( { 
       src: __dirname + '/public' 
     , compile: function (str, path) { 
-      return stylus(str).set('filename', path).use(nib());
-    } 
+        return stylus(str).set('filename', path);
+      } 
   } ));
   app.use(express.static(__dirname + '/public'));
   app.use(express.bodyParser());
@@ -90,5 +89,6 @@ db.connect(app.get('mongourl'), function(err) {
 
   /* Start server */
   console.log('Express server listening on port ' + app.get('port'));
-  app.listen(app.get('port'));
+  var server = app.listen(app.get('port'));
+
 });
