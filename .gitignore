@@ -1,6 +1,6 @@
 node_modules
-app/public/css/lazycook.css
 .DS_Store
 *.log
 mongodb/
 mongodb.log*
+app/mods/contact/public/livechat.css
