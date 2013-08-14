@@ -32,11 +32,25 @@ angular.module('lazycook', []).factory('socket', function ($rootScope) {
 /* Controllers */
 
 var LiveChatCtrl = ['$scope', 'socket', function($scope, socket) {
-  $scope.messages = [];
-  $scope.login = null;
 
-  socket.on('init', function (message) {
-    $scope.messages.push(message);
+  socket.on('init', function () {
+    /* TODO: add initial messages and users here */
+    $scope.messages = [];
+    $scope.users = [];
+    $scope.login = null;
+    console.log('init');
+  });
+
+  socket.on('user:join', function (user) {
+    $scope.users.push(user);
+  });
+
+  socket.on('user:left', function (user) {
+    var users = [];
+    $.each( $scope.users, function(i, elt) {
+      if (elt.login != user.login) users.push(elt);
+    });
+    $scope.users = users;
   });
 
   socket.on('login:change', function (login) {
@@ -45,6 +59,7 @@ var LiveChatCtrl = ['$scope', 'socket', function($scope, socket) {
   
   socket.on('send:message', function (message) {
     $scope.messages.push(message);
+    scrollBottom( $('#chat') );
   });
 
   $scope.sendMessage = function () {
@@ -57,6 +72,7 @@ var LiveChatCtrl = ['$scope', 'socket', function($scope, socket) {
 
     socket.emit('send:message', message);
     $scope.messages.push(message);
+    scrollBottom( $('#chat') );
 
     // clear message box
     $scope.message = '';

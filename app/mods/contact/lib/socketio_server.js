@@ -42,13 +42,7 @@ module.exports = function(app, server, options) {
   /* bind our socket events */
   io.sockets.on('connection', function (socket) {
     var session = socket.handshake.session
-      , sessionID = socket.handshake.sessionID
-      , init_message = {
-            type: 'system'
-          , from: 'System'
-          , date: Date.now()
-          , content: "Connected to livechat"
-        };
+      , sessionID = socket.handshake.sessionID;
 
     if (session.passport.user) {
       db.User.findOne({'login': session.passport.user}, function(err, user) {
@@ -57,15 +51,35 @@ module.exports = function(app, server, options) {
           return;
         }
 
+        var obj = {
+            'login': user.login
+          , 'role': user.role
+        };
+
+        socket.emit('user:left', {'login': sessionID});
+        socket.emit('user:join', obj);
         socket.emit('login:change', user.login);
       });
     }
 
+    var user = {
+        'login': sessionID
+      , 'role': 'user'
+    };
+    socket.emit('init');
     socket.emit('login:change', sessionID);
+    socket.emit('user:join', user);
+    socket.broadcast.emit('user:join', user);
 
-    socket.emit('init', init_message);
+    socket.emit('send:message', {
+        type: 'system'
+      , from: 'System'
+      , date: Date.now()
+      , content: "Connected to livechat"
+    });
 
     socket.on('send:message', function (message) {
+      message['type'] = 'remote';
       socket.broadcast.emit('send:message', message);
     });
 
