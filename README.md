@@ -9,6 +9,8 @@ The main [app.js](https://github.com/PiTiLeZarD/lazycook/blob/master/app/app.js)
 List of modules:
  * [Auth](https://github.com/PiTiLeZarD/lazycook/tree/master/app/mods/auth) (WIP)
       Enables your apps to have users registering themselves, logging in and doing all the cool stuffs you want them to do.
+ * [Contact](https://github.com/PiTiLeZarD/lazycook/tree/master/app/mods/contact) (WIP)
+      Contact page ++ provides in-site mail system, and livechat support
 
 Bundled frameworks:
  * Server: [nodeJS](http://nodejs.org/) / [expressJS](http://expressjs.com/)
@@ -23,6 +25,7 @@ Bundled frameworks:
   * [express-validator](https://github.com/ctavan/express-validator)
   * [Connect-Flash](https://github.com/jaredhanson/connect-flash)
   * [Nodemailer](https://github.com/andris9/Nodemailer)
+  * [socket.io](http://socket.io/)
  
 ## Installation
 

@@ -23,6 +23,7 @@
     , "express-validator": "*"
     , "connect-flash": "*"
     , "nodemailer": "*"
+    , "socket.io": "*"
   }
   , "repository": {
       "type"  : "git"
