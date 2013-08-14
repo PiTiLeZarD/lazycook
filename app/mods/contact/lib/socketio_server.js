@@ -168,4 +168,15 @@ var init_livechat = function(err, livechat, session, socket, save) {
     });
   });
 
+  socket.on('user:left', function () {
+    var users = [];
+    livechat.users.forEach(function(u) {
+      if (u.login != user.login) users.push(u);
+    });
+    livechat.users = users;
+    livechat.save(function(err) {
+      socket.broadcast.emit('user:left', user);
+    });
+  });
+
 };
