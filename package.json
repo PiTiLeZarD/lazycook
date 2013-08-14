@@ -13,7 +13,9 @@
     , "stylus": "*"
     , "karma": "*"
     , "mongoose": "*"
+    , "connect": "*"
     , "connect-mongo": "*"
+    , "connect-flash": "*"
     , "passport": "*"
     , "passport-local": "*"
     , "acl": "*"
@@ -21,7 +23,6 @@
     , "mocha": "*"
     , "chai": "*"
     , "express-validator": "*"
-    , "connect-flash": "*"
     , "nodemailer": "*"
     , "socket.io": "*"
   }

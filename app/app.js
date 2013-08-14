@@ -47,11 +47,12 @@ db.connect(app.get('mongourl'), function(err) {
   db.initialize(options);
 
   /* sessions */
+  var sessionStore = options['sessionStore'] = new MongoStore({ 'db' : db.mongo });
   app.use(express.cookieParser());
   app.use(express.session({
-      secret:'Im clark kent'
+      secret: config.secret
     , maxAge: new Date(Date.now() + 3600000)
-    , store: new MongoStore({ 'db' : db.mongo })
+    , store: sessionStore
   })); 
   app.use(flash());
 

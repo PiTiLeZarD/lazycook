@@ -18,6 +18,7 @@ block content
 
     #user.small-12.columns
       form(ng-submit="sendMessage()")
+        input(type="text", disabled="disabled", ng-model="login")
         input(type="text", name="input", ng-model="message")
-        input(type='submit', value='Send')
+        input(type='submit', value="Send", class="radius button")
 
