@@ -2,7 +2,7 @@
 
 div#chat
   height 350px
-  overflow scroll
+  overflow-y auto
 
   >div
     width 75%
@@ -16,9 +16,12 @@ div#chat
       height 1.5em
 
       .name
-        float:left
+        float left
       .date
-        float:right
+        float right
+
+  .content
+    clear both
 
   .remote, .system
     margin-right auto

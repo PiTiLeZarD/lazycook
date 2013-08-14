@@ -7,7 +7,7 @@ module.exports = function(parent, options){
   var verbose = options.verbose
     , mods_path = options.mods_path || __dirname + '/../mods/';
 
-  console.log('Routing using path %s...', mods_path)
+  verbose && console.log('Routing using path %s...', mods_path)
   fs.readdirSync(mods_path).forEach( function(name) {
     verbose && console.log('\n   Module %s:', name);
 

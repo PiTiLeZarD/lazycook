@@ -91,4 +91,7 @@ db.connect(app.get('mongourl'), function(err) {
   console.log('Express server listening on port ' + app.get('port'));
   var server = app.listen(app.get('port'));
 
+  /* reuse our server (socket.io and others...) */
+  require('./lib/servers')(app, server, options);
+
 });

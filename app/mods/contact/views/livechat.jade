@@ -1,44 +1,23 @@
 extend ../../../views/layout
 
 block header_adds
+  script(type="text/javascript", src="/socket.io/socket.io.js")
   script(type="text/javascript", src="/public/contact/livechat.js")
   link(rel='stylesheet', href='/public/contact/livechat.css')
 
 block content
-  .row
+  .row(ng-controller='LiveChatCtrl')
     
     #chat.small-12.columns
-      .system
+      div((ng-repeat='message in messages'), class="{{message.type}}")
         .info
-          .name System
-          .date Now
-        | Connecting to livechat...
-
-      .system
-        .info
-          .name System
-          .date Now
-        | Connected!
-
-      .system
-        .info
-          .name System
-          .date Now
-        | You're speaking with UserRemote
-
-      .remote
-        .info
-          .name UserRemote
-          .date Now
-        span.user UserRemote
-        | Hello, how can I help you today?
-
-      .local
-        .info
-          .name Me
-          .date Now
-        | Hi I have a problem
+          .name {{message.from}}
+          .date {{message.date | date:'dd/MM/yy hh:mm:ss'}}
+        .content
+          | {{message.content}}
 
     #user.small-12.columns
-      input(type="text", name="input")
+      form(ng-submit="sendMessage()")
+        input(type="text", name="input", ng-model="message")
+        input(type='submit', value='Send')
 

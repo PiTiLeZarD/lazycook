@@ -1,6 +1,6 @@
 div#chat {
   height: 350px;
-  overflow: scroll;
+  overflow-y: auto;
 }
 div#chat >div {
   width: 75%;
@@ -18,6 +18,9 @@ div#chat >div .info .name {
 }
 div#chat >div .info .date {
   float: right;
+}
+div#chat .content {
+  clear: both;
 }
 div#chat .remote,
 div#chat .system {
