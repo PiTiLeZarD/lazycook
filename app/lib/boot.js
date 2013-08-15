@@ -2,28 +2,15 @@
 var express = require('express')
   , stylus = require('stylus')
   , fs = require('fs')
-  , acl = require('acl')
-  , acl = new acl(new acl.memoryBackend())
+  , acl = require('simple-acl')
   , db = require('./db');
+
 
 module.exports = function(parent, options){
   var verbose = options.verbose
     , mods_path = options.mods_path || __dirname + '/../mods/';
 
-  if ('User' in db) {
-    db.User.find({'role': {'$ne': 'user'}}, function(err, users) {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      users.forEach( function(user) {
-        verbose && console.log('  ACL> User %s with role %s', user.login, user.role);
-        acl.addUserRoles(user.login, ['user', user.role], function() {});
-      })
-    })
-  }
-
+  acl.use(new acl.MemoryStore());
 
   verbose && console.log('Routing using path %s...', mods_path)
   fs.readdirSync(mods_path).forEach( function(name) {
@@ -90,23 +77,37 @@ module.exports = function(parent, options){
         var method = controller[key].method || 'get'
           , path = prefix + (controller[key].path || '/')
           , call = controller[key].fn || function(req, res) { res.redirect('/error/404'); }
-          , args = [path, call]
-          , groups = controller[key].groups || null
-          , acl_shift = controller[key].acl_shift || 0;
+          , groups = controller[key].groups || ['user'];
         
-        verbose && console.log('       %s %s -> %s', method, path, key);
-        if (('User' in db) && groups) {
-          groups.forEach( function(group) {
-            acl.allow(group, path, method, function() {});
-          });
-          var mid = acl.middleware(acl_shift, function(req, res) {
-            return req.isAuthenticated() ? req.user[0].login : 'user';
-          }, method);
-          verbose && console.log('       -> acl_allow (%s)', groups);
-          args = [path, mid, call];
-        }
+        /* acl */
+        app.use(function(req, res, next) {
+          var groups = [req.isAuthenticated() ? req.user[0].role : 'user'];
+          if (-1 == groups.indexOf('user')) groups.push('user');
 
-        app[method].apply(app, args);
+          var ok = false
+            , i = groups.length;
+
+          var checkGroup = function(err, nextGroup) {
+            if (i--) {
+              acl.assert(groups[i], req.url, function(err, check) {
+                ok = ok || check;
+                nextGroup(err);
+              });
+            } else {
+              if (!ok) return res.send(403, 'Forbidden');
+              return next(err);
+            }
+          };
+          var nextGroup = function(err) { checkGroup(err, nextGroup); };
+          checkGroup(null, nextGroup);
+        });
+
+        groups.forEach(function(group) {
+          acl.grant(group, path, function() {});
+        });
+        verbose && console.log('       %s %s -> %s (acl:%s)', method, path, key, groups);
+
+        app[method](path, call);
       }
       
     });

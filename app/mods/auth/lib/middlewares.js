@@ -22,7 +22,7 @@ module.exports = function( app, options ) {
         }
 
         user.comparePassword(password, function(err, isMatch) {
-          if (err) next(err, false);
+          if (err) return next(err, false);
           if (isMatch) {
             verbose && console.log('User %s logged in', login);
             next(null, user);

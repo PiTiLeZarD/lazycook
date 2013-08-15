@@ -19,7 +19,7 @@ Bundled frameworks:
  * Responsive Front-end: [Foundation4](http://foundation.zurb.com)
  * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
  * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/)
- * Authentication: [PassportJS](http://passportjs.org/) / [NodeACL](https://github.com/optimalbits/node_acl)
+ * Authentication: [PassportJS](http://passportjs.org/) / [simple-acl](https://github.com/chakrit/simple-acl)
  * Testing: [Karma](http://karma-runner.github.io) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/) / [Mocha](http://visionmedia.github.io/mocha/) / [chai](http://chaijs.com/)
  * Other: 
   * [express-validator](https://github.com/ctavan/express-validator)
