@@ -108,7 +108,7 @@ var init_livechat = function(err, livechat, session, socket, save) {
     livechat.messages.forEach( function(m) {
       var message = {
           from: m.from
-        , type: ~~[uid, user ? user.login : null].indexOf(m.from) ? 'local' : 'remote'
+        , type: (-1 != [""+uid, user ? user.login : null].indexOf(m.from)) ? 'local' : 'remote'
         , date: m.date
         , content: m.content
       }
