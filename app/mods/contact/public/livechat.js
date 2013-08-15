@@ -49,7 +49,7 @@ var LiveChatCtrl = ['$scope', 'socket', function($scope, socket) {
     scrollBottom( $('#chat') );
   });
 
-  socket.on('user:list', function (users) {
+  socket.on('init:users', function (users) {
     $scope.users = users;
   });
 
@@ -71,6 +71,16 @@ var LiveChatCtrl = ['$scope', 'socket', function($scope, socket) {
   
   socket.on('send:message', function (message) {
     $scope.messages.push(message);
+    scrollBottom( $('#chat') );
+  });
+
+  socket.on('error', function (err) {
+    $scope.messages.push({
+        type: 'system'
+      , from: 'Error'
+      , date: Date.now()
+      , content: err
+    });
     scrollBottom( $('#chat') );
   });
 

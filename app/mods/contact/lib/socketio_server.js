@@ -68,10 +68,12 @@ var authorization = function (sessionStore, data, accept) {
 };
 
 var init_livechat = function(err, livechat, session, socket, save) {
-  if (err) {
+  var handleError = function(err) {
     console.log(err);
-    return;
+    socket.emit('error', err);
+    return false;
   }
+  if (err) return handleError(err);
 
   var uid = session['livechatUID']
     , user = null;
@@ -94,75 +96,77 @@ var init_livechat = function(err, livechat, session, socket, save) {
     });
   }
 
-  if (!user) {
+  if (user && (user.login == uid) && session.passport.user) {
+    /* ok here we somehow logged in in between */
+    socket.emit('user:left', user);
+    socket.broadcast.emit('user:left', user);
+    user = null;
+  }
 
+  var sendHistory = function(user) {
+    var messages = [];
+    livechat.messages.forEach( function(m) {
+      var message = {
+          from: m.from
+        , type: ~~[uid, user ? user.login : null].indexOf(m.from) ? 'local' : 'remote'
+        , date: m.date
+        , content: m.content
+      }
+      messages.push(message);
+    } );
+    socket.emit('init:messages', messages);
+  }
+
+  var userJoin = function(u) {
+    livechat.users.push(u);
+    livechat.save(function(err) {
+      if (err) return handleError(err);
+      socket.emit('login:change', u.login);
+      socket.broadcast.emit('user:join', u);
+      sendHistory(user);
+    });
+  };
+
+  if (!user) {
     /* we're new here, so let's join the chat */
-    var userJoin = function(u) {
-      livechat.users.push(u);
-      livechat.save(function(err) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        socket.emit('login:change', u.login);
-        socket.broadcast.emit('user:join', u);
-      });
-    };
 
     if (session.passport.user) {
-
       /* if we're logged in */
       db.User.findOne({'login': session.passport.user}, function(err, dbuser) {
-        if (err) {
-          console.log(err);
-          return;
-        }
+        if (err) return handleError(err);
         user = {
             'login': dbuser.login
           , 'role': dbuser.role
         };
+        userJoin(user);
       });
-
     } else {
-
       /* Anonymous */
       user = {
           'login': uid
-        , 'role': 'role'
+        , 'role': 'user'
       };
-
+      userJoin(user);
     }
-
-    userJoin(user);
   }
-
 
   socket.emit('init');
-  if (user) {
-    socket.emit('login:change', user.login);
-  }
-  socket.emit('user:list', livechat.users);
+  socket.emit('init:users', livechat.users);
   socket.emit('send:message', {
       type: 'system'
     , from: 'System'
     , date: Date.now()
     , content: "Connected to livechat"
   });
-  var messages = [];
-  livechat.messages.forEach( function(m) {
-    var message = {
-        from: m.from
-      , type: (m.from == user.login) ? 'local' : 'remote'
-      , date: m.date
-      , content: m.content
-    }
-    messages.push(message);
-  } );
-  socket.emit('init:messages', messages);
+  if (user) {
+    socket.emit('login:change', user.login);
+    sendHistory(user);
+  }
 
   socket.on('send:message', function (message) {
     livechat.messages.push(message);
     livechat.save(function(err) {
+      if (err) return handleError(err);
       message['type'] = 'remote';
       socket.broadcast.emit('send:message', message);
     });
@@ -175,6 +179,7 @@ var init_livechat = function(err, livechat, session, socket, save) {
     });
     livechat.users = users;
     livechat.save(function(err) {
+      if (err) return handleError(err);
       socket.broadcast.emit('user:left', user);
     });
   });
