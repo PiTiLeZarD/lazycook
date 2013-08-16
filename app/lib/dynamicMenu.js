@@ -27,25 +27,19 @@ DynamicMenu.prototype.addLink = function(name, href, title) {
 
 module.exports.DynamicMenu = DynamicMenu;
 
-module.exports.middleware = function(parent) {
-  var app = express();
+module.exports.middleware = function(req, res, next) {
 
-  app.use(function(req, res, next) {
+  /* our menu list, feel free to tweak it */
+  res.locals.dynamicMenu = [ new DynamicMenu('dynamicMenu') ];
 
-    /* our menu list, feel free to tweak it */
-    res.locals.dynamicMenu = [ new DynamicMenu('dynamicMenu') ];
+  /* add a convenience function */
+  res.addMenuLink = function(name, href, title) {
+    res.locals.dynamicMenu.forEach( function(menu) {
+      if (menu.id == 'dynamicMenu') menu.addLink(name, href, title);
+    });
+  };
 
-    /* add a convenience function */
-    res.addMenuLink = function(name, href, title) {
-      res.locals.dynamicMenu.forEach( function(menu) {
-        if (menu.id == 'dynamicMenu') menu.addLink(name, href, title);
-      });
-    };
-
-    next();
-  });
-
-  parent.use(app);
+  next();
 };
 
 

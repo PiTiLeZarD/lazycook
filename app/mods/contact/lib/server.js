@@ -5,7 +5,7 @@ var socketio = require('socket.io')
   , db = require('../../../lib/db');
 
 
-module.exports = function(app, server, options) {
+module.exports = function(server, options) {
   var verbose = options.verbose
     , io = socketio.listen(server)
     , sessionStore = options['sessionStore'] || null;

@@ -1,3 +1,5 @@
+"use strict";
+
 var config = require('./config')
   , express = require('express')
   , stylus = require('stylus')
@@ -39,12 +41,15 @@ app.configure( 'prod', function (){
 /* Initialize DB */
 db.connect(app.get('mongourl'), function(err) {
   if (err) {
+    console.log(err);
     console.log('Exiting...');
     process.exit();
   }
-  var options = { verbose: app.get('env') === 'dev' };
 
-  db.initialize(options);
+  var options = { verbose: app.get('env') === 'dev' }
+    , mods = require('./lib/lazymods')(options);
+
+  db.initialize();
 
   /* sessions */
   var sessionStore = options['sessionStore'] = new MongoStore({ 'db' : db.mongo });
@@ -66,33 +71,29 @@ db.connect(app.get('mongourl'), function(err) {
   });
 
   /* our dynamic menu */
-  require('./lib/dynamicMenu').middleware(app);
+  app.use(require('./lib/dynamicMenu').middleware);
 
   /* basic param error handling */
-  app.use(function(req, res, next) {
-    req.assertErrorsToHome = function() {
-      var errors = req.validationErrors();
-      if (errors && errors.length) {
-        var messages = null;
-        errors.forEach(function(val) {
-          (messages = messages || []).push(val['msg']);
-        });
-        req.flash('messages', messages);
-        return res.redirect('/');
-      }
-      return false;
-    };
-    next();
+  app.use(require('./lib/validation').middleware);
+
+  /* app config */
+  mods.forEach(function(mod) {
+    var middleware = mod.middleware();
+    if (middleware) app.use(middleware);
   });
 
-  /* Initialize controllers, routing... */
-  require('./lib/boot')(app, options);
+  /* routing */
+  mods.forEach(function(mod) {
+    mod.routing(app);
+  });
 
   /* Start server */
   console.log('Express server listening on port ' + app.get('port'));
   var server = app.listen(app.get('port'));
 
-  /* reuse our server (socket.io and others...) */
-  require('./lib/servers')(app, server, options);
+  /* reuse server ? */
+  mods.forEach(function(mod) {
+    mod.useServer(server, options);
+  });
 
 });
