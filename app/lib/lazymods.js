@@ -43,16 +43,16 @@ Lazymod.prototype.init = function(path, name) {
 Lazymod.prototype.log = function(message) {
   var message = ' - ' + this.name + ' - ' + message
     , args = [message]
-    , i = arguments.length;
+    , i = 0;
 
-  while (i-- > 1) args.push( arguments[i] );
+  while (i++ < arguments.length - 1) args.push( arguments[i] );
 
   this.options.verbose && console.log.apply(console, args);
 };
 
 Lazymod.prototype.routing = function(parent) {
   var module = require(this.path + this.name)
-    , name = module.name || name
+    , name = module.name || this.name
     , prefix = module.prefix || ''
     , app = express()
     , viewengine = module.viewengine || parent.get('view engine')
@@ -62,7 +62,7 @@ Lazymod.prototype.routing = function(parent) {
   /* statics for this module */
   var public_path = self.path + self.name + '/public/';
   if (fs.existsSync(public_path)) {
-    self.log('     Public found here %s', public_path);
+    self.log('  Public found here %s', public_path);
 
     /* check for use of stylus in this public folder */
     var use_stylus = false;
@@ -70,7 +70,7 @@ Lazymod.prototype.routing = function(parent) {
       if (/\.styl$/.test(elt)) use_stylus = true;
     });
     if (use_stylus) {
-      self.log('       Using stylus');
+      self.log('    Using stylus');
       app.use(stylus.middleware( { 
           src: public_path
         , compile: function (str, path) { 
@@ -79,8 +79,13 @@ Lazymod.prototype.routing = function(parent) {
       } ));
     }
 
-    self.log('       Monting public on /public/%s/', name)
+    self.log('    Monting public on /public/%s/', name)
     app.use('/public/' + name, express.static(public_path));
+
+    var match = 'GET:/public/' + name + '/**';
+    acl.grant('anonymous', match, function() {
+      self.log('    ACL: %s -> %s', 'anonymous', match);
+    });
   }
 
   app.set('env', parent.get('env'));
@@ -91,16 +96,16 @@ Lazymod.prototype.routing = function(parent) {
   if (module.before) {
     path = '/' + name + '/:' + name + '_id';
     app.all(path, module.before);
-    self.log('     ALL %s -> before', path);
+    self.log('  ALL %s -> before', path);
     path = '/' + name + '/:' + name + '_id/*';
     app.all(path, module.before);
-    self.log('     ALL %s -> before', path);
+    self.log('  ALL %s -> before', path);
   }
 
   /* Bind all calls */
   var controller_path = self.path + self.name + '/controllers/';
   fs.readdirSync(controller_path).forEach( function(controller_name) {
-    self.log('     Controller %s:', controller_name);
+    self.log('  Controller %s:', controller_name);
 
     var controller = require(controller_path + controller_name);
     for (var key in controller) {
@@ -111,9 +116,12 @@ Lazymod.prototype.routing = function(parent) {
         , groups = controller[key].groups || ['anonymous'];
       
       groups.forEach(function(group) {
-        acl.grant(group, method.toUpperCase() + ':' + path, function() {});
+        var match = method.toUpperCase() + ':' + path.replace(/\/(:[^\/]+)/g, '/*');
+        acl.grant(group, match, function() {
+          self.log('    ACL: %s -> %s', group, match);
+        });
       });
-      self.log('       %s %s -> %s (acl:%s)', method, path, key, groups);
+      self.log('    VERB: %s -> %s %s', method, path, key);
 
       app[method](path, call);
     }

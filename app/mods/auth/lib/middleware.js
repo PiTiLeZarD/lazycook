@@ -1,3 +1,4 @@
+"use strict";
 
 var db = require('../../../lib/db')
   , passport = require('passport')
@@ -5,7 +6,8 @@ var db = require('../../../lib/db')
   , DynamicMenu = require('../../../lib/dynamicMenu').DynamicMenu
   , express = require('express')
   , middleware = express()
-  , acl = require('simple-acl');
+  , acl = require('simple-acl')
+  , AclStore = require('./acl-store');
 
 module.exports = middleware;
 
@@ -47,8 +49,8 @@ middleware.use(passport.session());
 
 
 /* ACL */
+acl.use( new AclStore() );
 middleware.use(function(req, res, next) {
-
   var groups = ['anonymous']
     , group = req.isAuthenticated() ? req.user[0].role : null;
   
@@ -63,10 +65,12 @@ middleware.use(function(req, res, next) {
 
   var checkGroup = function(err, nextGroup) {
     if (i--) {
-      acl.assert(groups[i], resource, function(err, check) {
-        ok = ok || check;
-        nextGroup(err);
-      });
+      if (groups[i]) {
+        acl.assert(groups[i], resource, function(err, check) {
+          ok = ok || check;
+          nextGroup(err);
+        });
+      } else nextGroup(err);
     } else {
       if (!ok) return res.send(403, 'Forbidden');
       return next(err);
