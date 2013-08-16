@@ -92,16 +92,6 @@ Lazymod.prototype.routing = function(parent) {
   app.set('views', self.path + self.name + '/views/');
   app.set('view engine', viewengine);
 
-  /* before middleware support */
-  if (module.before) {
-    path = '/' + name + '/:' + name + '_id';
-    app.all(path, module.before);
-    self.log('  ALL %s -> before', path);
-    path = '/' + name + '/:' + name + '_id/*';
-    app.all(path, module.before);
-    self.log('  ALL %s -> before', path);
-  }
-
   /* Bind all calls */
   var controller_path = self.path + self.name + '/controllers/';
   fs.readdirSync(controller_path).forEach( function(controller_name) {
