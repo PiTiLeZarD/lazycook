@@ -4,9 +4,10 @@ var db = require('../../../lib/db')
 module.exports.postregister = {
     'path': '/user/register'
   , 'method': 'post'
-  , 'fn': function(req, res, next) {
+  , 'validation': function(req) {
       req.assert('email', 'Valid email required').isEmail();
-      if (req.assertErrorsToHome()) return;
+    }
+  , 'fn': function(req, res, next) {
 
       var email = req.body.email
         , login = crypto.randomBytes(20).toString('hex');
@@ -53,10 +54,10 @@ module.exports.postregister = {
 
 module.exports.confirm = {
     'path': '/user/confirm/:hash'
-  , 'fn': function(req, res, next) {
+  , 'validation': function(req) {
       req.assert('hash', 'Valid hash required').len(20).isHexadecimal();
-      if (req.assertErrorsToHome()) return;
-
+    }
+  , 'fn': function(req, res, next) {
       var hash = req.params.hash;
 
       db.User.findOne({'login': hash}, function(err, user) {
@@ -70,10 +71,10 @@ module.exports.confirm = {
 module.exports.postconfirm = {
     'path': '/user/confirm/:hash'
   , 'method': 'post'
-  , 'fn': function(req, res, next) {
+  , 'validation': function(req) {
       req.assert('hash', 'Valid hash required').len(20).isHexadecimal();
-      if (req.assertErrorsToHome()) return;
-
+    }
+  , 'fn': function(req, res, next) {
       var hash = req.params.hash
         , login = req.body.login
         , password = req.body.password

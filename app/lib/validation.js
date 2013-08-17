@@ -1,17 +1,19 @@
+"use strict";
 
+module.exports = function(validation) {
+  return function(req, res, next) {
+    var url = validation(req) || '/'
+      , errors = req.validationErrors();
 
-module.exports.middleware = function(req, res, next) {
-  req.assertErrorsToHome = function() {
-    var errors = req.validationErrors();
     if (errors && errors.length) {
       var messages = null;
       errors.forEach(function(val) {
         (messages = messages || []).push(val['msg']);
       });
       req.flash('messages', messages);
-      return res.redirect('/');
+      return res.redirect(url);
     }
-    return false;
+
+    next();
   };
-  next();
-}
+};

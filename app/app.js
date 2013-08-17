@@ -73,9 +73,6 @@ db.connect(app.get('mongourl'), function(err) {
   /* our dynamic menu */
   app.use(require('./lib/dynamicMenu').middleware);
 
-  /* basic param error handling */
-  app.use(require('./lib/validation').middleware);
-
   /* app config */
   mods.forEach(function(mod) {
     var middleware = mod.middleware();

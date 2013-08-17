@@ -50,6 +50,9 @@ Lazymod.prototype.log = function(message) {
   this.options.verbose && console.log.apply(console, args);
 };
 
+
+
+
 Lazymod.prototype.routing = function(parent) {
   var module = require(this.path + this.name)
     , name = module.name || this.name
@@ -102,18 +105,26 @@ Lazymod.prototype.routing = function(parent) {
 
       var method = controller[key].method || 'get'
         , path = prefix + (controller[key].path || '/')
+        , validation = controller[key].validation || null
         , call = controller[key].fn || function(req, res) { res.redirect('/error/404'); }
         , groups = controller[key].groups || ['anonymous'];
       
+      var args = [path];
+      if (validation) {
+        args.push(require('./validation')(validation));
+        self.log('    Using validation for:');
+      }
+
       groups.forEach(function(group) {
         var match = method.toUpperCase() + ':' + path.replace(/\/(:[^\/]+)/g, '/*');
         acl.grant(group, match, function() {
           self.log('    ACL: %s -> %s', group, match);
         });
       });
-      self.log('    VERB: %s -> %s %s', method, path, key);
 
-      app[method](path, call);
+      args.push(call);
+      self.log('    VERB: %s -> %s %s', method, path, key);
+      app[method].apply(app, args);
     }
     
   });
@@ -121,6 +132,9 @@ Lazymod.prototype.routing = function(parent) {
   /* mount the controller to the main app */
   parent.use(app);
 };
+
+
+
 
 Lazymod.prototype.models = function() {
   var model_path = this.path + this.name + '/models/'
@@ -149,6 +163,7 @@ Lazymod.prototype.models = function() {
 };
 
 
+
 Lazymod.prototype.middleware = function() {
   var path = this.path + this.name + '/lib/middleware.js'
     , self = this;
@@ -160,6 +175,7 @@ Lazymod.prototype.middleware = function() {
 
   return null;
 };
+
 
 
 Lazymod.prototype.useServer = function(server, options) {
