@@ -5,7 +5,7 @@ var scrollBottom = function( $elt ) {
   elt.scrollTop = elt.scrollHeight - $elt.height();
 }
 
-angular.module('lazycook', []).factory('socket', function ($rootScope) {
+angular.module('ng-contact', []).factory('socket', function ($rootScope) {
   var socket = io.connect();
   return {
     on: function (eventName, callback) {

@@ -4,7 +4,7 @@ module.exports.users = {
     'path': '/users'
   , 'groups': ['admin']
   , 'fn': function(req, res) {
-      res.render('users');
+      res.render('users', {'ngApp': 'ng-users'});
     }
 };
 

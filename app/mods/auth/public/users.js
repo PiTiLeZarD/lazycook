@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-angular.module('lazycook', []);
+angular.module('ng-users', []);
 
 var UsersCtrl = ['$scope', '$http', function($scope, $http) {
   $http.get('/users/list.json').success(function(data) {

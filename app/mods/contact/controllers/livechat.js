@@ -63,7 +63,7 @@ exports.livechat = {
 exports.livechatWithID = {
     'path': '/contact/livechat/:livechatID'
   , 'fn': function(req, res, next) {
-      res.render('livechat');
+      res.render('livechat', {'ngApp': 'ng-contact'});
     }
 };
 
