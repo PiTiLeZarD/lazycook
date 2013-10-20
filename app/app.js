@@ -81,7 +81,11 @@ db.connect(app.get('mongourl'), function(err) {
 
   /* routing */
   mods.forEach(function(mod) {
-    mod.routing(app);
+    try {
+      mod.routing(app);
+    } catch(e) {
+      console.log('[WARN] Mod ' + mod.name + ' wont be routed, check if you have a proper index.js at module\'s root');
+    }
   });
 
   /* Start server */

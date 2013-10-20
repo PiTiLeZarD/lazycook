@@ -15,7 +15,7 @@ module.exports = (function() {
     var list = this.rights[grantee]
       , ok = false;
 
-    list.forEach(function(elt) {
+    if (list) list.forEach(function(elt) {
       var regexp = '^' + elt.replace('/**', '/.*').replace('/*', '/[^/]*') + '$';
       if (!ok) ok = (elt == resource);
       if (!ok) ok = resource.match( new RegExp( regexp, 'g') );

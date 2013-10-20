@@ -54,11 +54,10 @@ middleware.use(function(req, res, next) {
   var groups = ['anonymous']
     , group = req.isAuthenticated() ? req.user[0].role : null;
   
-  groups.push(group);
+  groups.push('user');
   if (group && (group != 'user')) {
-    groups.push('user');
+    groups.push(group);
   }
-
   var ok = false
     , i = groups.length
     , resource = req.method + ':' + req.path;
