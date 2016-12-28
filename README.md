@@ -20,7 +20,7 @@ Bundled frameworks:
  * JS Framework: [AngularJS](http://angularjs.org/) / [Zepto](http://zeptojs.com/)
  * DB: [MangoDB](http://www.mongodb.org/) / [mongoose](http://mongoosejs.com/)
  * Authentication: [PassportJS](http://passportjs.org/) / [simple-acl](https://github.com/chakrit/simple-acl)
- * Testing: [Karma](http://karma-runner.github.io) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/) / [Mocha](http://visionmedia.github.io/mocha/) / [chai](http://chaijs.com/)
+ * Testing: [Karma](http://karma-runner.github.io) / [Jasmine](http://pivotal.github.io/jasmine/) / [PhantomJS](http://phantomjs.org/) / [Mocha](http://mochajs.org/) / [chai](http://chaijs.com/)
  * Other: 
   * [express-validator](https://github.com/ctavan/express-validator)
   * [Connect-Flash](https://github.com/jaredhanson/connect-flash)
